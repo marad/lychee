@@ -1,0 +1,7 @@
+include 'api'
+include 'common'
+include 'server'
+include 'client'
+include 'integration'
+
+rootProject.name = 'lychee'

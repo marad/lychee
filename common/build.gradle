@@ -1,0 +1,10 @@
+repositories {
+    maven {
+        url 'http://javaxdelta.sourceforge.net/maven2/repository'
+    }
+}
+
+dependencies {
+    compile project(':api')
+    compile 'com.nothome:javaxdelta:2.0.1'
+}
