@@ -2,7 +2,8 @@ package io.github.marad.lychee.client.state
 
 import com.nothome.delta.Delta
 import io.github.marad.lychee.api.State
-import io.github.marad.lychee.common.{StateSerializer, UnitTest}
+import io.github.marad.lychee.client.UnitTest
+import io.github.marad.lychee.common.StateSerializer
 
 class StatePatchTest extends UnitTest {
   val delta = new Delta

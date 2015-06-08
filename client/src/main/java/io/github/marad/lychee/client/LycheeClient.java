@@ -1,14 +1,15 @@
 package io.github.marad.lychee.client;
 
+import io.github.marad.lychee.api.State;
 import io.github.marad.lychee.client.state.StateChangeListener;
 import io.github.marad.lychee.client.state.StateChangeNotifier;
 import io.github.marad.lychee.client.state.StateTracker;
 import io.github.marad.lychee.client.state.TcpClient;
 
-public class LycheeClient {
+public class LycheeClient<S extends State> {
     private final TcpClient client;
-    private final StateChangeNotifier stateChangeNotifier = new StateChangeNotifier();
-    private final StateTracker stateTracker = new StateTracker(stateChangeNotifier);
+    private final StateChangeNotifier<S> stateChangeNotifier = new StateChangeNotifier<S>();
+    private final StateTracker<S> stateTracker = new StateTracker<S>(stateChangeNotifier);
 
     public LycheeClient(String hostname, int tcpPort) {
         client = new TcpClient(hostname, tcpPort);
@@ -22,11 +23,15 @@ public class LycheeClient {
         client.await();
     }
 
-    public void addStateChangeListener(StateChangeListener listener) {
+    public void addStateChangeListener(StateChangeListener<S> listener) {
         stateChangeNotifier.addListener(listener);
     }
 
-    public void removeStateChangeListener(StateChangeListener listener) {
+    public void removeStateChangeListener(StateChangeListener<S> listener) {
         stateChangeNotifier.removeListener(listener);
+    }
+
+    public S getState() {
+        return stateTracker.getCurrentState();
     }
 }
