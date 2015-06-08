@@ -14,9 +14,6 @@ import java.io.Closeable;
 import java.io.IOException;
 
 public class TcpServer implements Closeable {
-    private static final Encoders encoders = Encoders.getInstance();
-    private static final Decoders decoders = Decoders.getInstance();
-
     private final int port;
 
     private EventLoopGroup bossGroup;
@@ -59,7 +56,7 @@ public class TcpServer implements Closeable {
                 .channel(NioServerSocketChannel.class)
                 .option(ChannelOption.SO_BACKLOG, 128)
                 .childOption(ChannelOption.SO_KEEPALIVE, true)
-                .childHandler(new ServerChannelInitializer(encoders, decoders, messageHandler));
+                .childHandler(new ServerChannelInitializer(messageHandler));
     }
 
     private void assertStarted() {

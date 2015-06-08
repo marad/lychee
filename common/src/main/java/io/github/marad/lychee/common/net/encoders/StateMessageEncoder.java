@@ -7,8 +7,6 @@ import io.github.marad.lychee.common.messages.StateMessage;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 
-import java.io.IOException;
-
 public class StateMessageEncoder implements MessageEncoder {
     @Override
     public int getMessageType() {
@@ -18,12 +16,7 @@ public class StateMessageEncoder implements MessageEncoder {
     @Override
     public ByteBuf encode(Message message) {
         StateMessage stateMessage = (StateMessage) message;
-        try {
-            byte[] data = StateSerializer.serialize(stateMessage.getState());
-            return Unpooled.copiedBuffer(data);
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new RuntimeException(e);
-        }
+        byte[] data = StateSerializer.serialize(stateMessage.getState());
+        return Unpooled.copiedBuffer(data);
     }
 }

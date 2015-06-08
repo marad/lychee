@@ -7,8 +7,6 @@ import io.github.marad.lychee.common.messages.MessageType;
 import io.github.marad.lychee.common.messages.StateMessage;
 import io.netty.buffer.ByteBuf;
 
-import java.io.IOException;
-
 public class StateMessageDecoder implements MessageDecoder {
     @Override
     public int getMessageType() {
@@ -20,13 +18,7 @@ public class StateMessageDecoder implements MessageDecoder {
         int size = byteBuf.readableBytes();
         byte[] data = new byte [size];
         byteBuf.readBytes(data);
-        try {
-            State state = StateSerializer.deserialize(data);
-            return new StateMessage(state);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
+        State state = StateSerializer.deserialize(data);
+        return new StateMessage(state);
     }
 }

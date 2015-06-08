@@ -16,9 +16,9 @@ public class InboundMessageDecoder extends ReplayingDecoder<DecoderState> {
     private int size;
     private Decoders decoders;
 
-    public InboundMessageDecoder(Decoders decoders) {
+    public InboundMessageDecoder() {
         super(READ_SIZE);
-        this.decoders = decoders;
+        this.decoders = Decoders.getInstance();
     }
 
     @Override
@@ -36,7 +36,7 @@ public class InboundMessageDecoder extends ReplayingDecoder<DecoderState> {
                 break;
 
             default:
-                throw new Error("Oops, you this should not happen!");
+                throw new Error("Oops, this should not happen!");
         }
     }
 

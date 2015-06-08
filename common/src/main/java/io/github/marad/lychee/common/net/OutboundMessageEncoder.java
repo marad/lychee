@@ -10,8 +10,8 @@ import io.netty.handler.codec.MessageToByteEncoder;
 public class OutboundMessageEncoder extends MessageToByteEncoder<Message> {
     private final Encoders encoders;
 
-    public OutboundMessageEncoder(Encoders encoders) {
-        this.encoders = encoders;
+    public OutboundMessageEncoder() {
+        this.encoders = Encoders.getInstance();
     }
 
     @Override
