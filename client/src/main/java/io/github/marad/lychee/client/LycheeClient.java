@@ -16,7 +16,8 @@ public class LycheeClient<S extends State> {
     }
 
     public void connect() {
-        client.connect();
+        ClientMessageHandler messageHandler = new ClientMessageHandler();
+        client.start(messageHandler);
     }
 
     public void await() throws InterruptedException {

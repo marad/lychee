@@ -21,8 +21,8 @@ public class TcpClient {
         this.tcpPort = tcpPort;
     }
 
-    public void connect() {
-        ClientChannelInitializer initializer = new ClientChannelInitializer();
+    public void start(ChannelInboundHandlerAdapter messageHandler) {
+        ClientChannelInitializer initializer = new ClientChannelInitializer(messageHandler);
         Bootstrap tcpBootstrap = setupTcpClient(initializer);
 
         channel = tcpBootstrap.connect(hostname, tcpPort).channel();
