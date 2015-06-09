@@ -1,23 +1,25 @@
 package io.github.marad.lychee.client.state;
 
 import com.google.common.collect.Lists;
+import com.google.inject.Singleton;
 import io.github.marad.lychee.api.State;
 
 import java.util.List;
 
-public class StateChangeNotifier<S extends State> {
-    private List<StateChangeListener<S>> listeners = Lists.newLinkedList();
+@Singleton
+public class StateChangeNotifier {
+    private List<StateChangeListener> listeners = Lists.newLinkedList();
 
-    public void addListener(StateChangeListener<S> listener) {
+    public void addListener(StateChangeListener listener) {
         listeners.add(listener);
     }
 
-    public void removeListener(StateChangeListener<S> listener) {
+    public void removeListener(StateChangeListener listener) {
         listeners.remove(listener);
     }
 
-    public void notifyStateChanged(S previousState, S currentState) {
-        for(StateChangeListener<S> listener : listeners) {
+    public void notifyStateChanged(State previousState, State currentState) {
+        for(StateChangeListener listener : listeners) {
             listener.stateUpdated(previousState, currentState);
         }
     }

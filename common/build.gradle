@@ -6,5 +6,6 @@ repositories {
 
 dependencies {
     compile project(':api')
-    compile 'com.nothome:javaxdelta:2.0.1'
+    compile 'com.nothome:javaxdelta:2.0.1',
+            'com.google.inject:guice:4.0'
 }

@@ -1,17 +1,25 @@
-package io.github.marad.lychee.server;
+package io.github.marad.lychee.server.netty;
 
 import io.github.marad.lychee.api.State;
 import io.github.marad.lychee.common.messages.StateMessage;
+import io.github.marad.lychee.server.LycheeServerConfig;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.inject.Singleton;
+
+@Singleton
+@Named("ServerMessageHandler")
 public class ServerMessageHandler extends ChannelInboundHandlerAdapter {
     private State initialState;
 
-    public ServerMessageHandler(State initialState) {
-        this.initialState = initialState;
+    @Inject
+    public ServerMessageHandler(LycheeServerConfig lycheeServerConfig) {
+        this.initialState = lycheeServerConfig.getInitialState();
     }
 
     @Override

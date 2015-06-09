@@ -1,4 +1,4 @@
-package io.github.marad.lychee.client;
+package io.github.marad.lychee.client.netty;
 
 import io.github.marad.lychee.common.messages.Message;
 import io.netty.channel.ChannelHandlerContext;
@@ -6,6 +6,11 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.inject.Named;
+import javax.inject.Singleton;
+
+@Singleton
+@Named("ClientMessageHandler")
 public class ClientMessageHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
@@ -13,6 +18,7 @@ public class ClientMessageHandler extends ChannelInboundHandlerAdapter {
 //        Message message = new StringMessage("Zażółć gęślą jaźń");
 //        logger.info("Sending {}", message);
 //        ctx.writeAndFlush(message);
+        super.channelActive(ctx);
     }
 
     @Override

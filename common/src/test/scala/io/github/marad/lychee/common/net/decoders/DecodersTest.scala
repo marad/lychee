@@ -6,7 +6,7 @@ class DecodersTest extends UnitTest {
 
   it should "find registered decoder for message type" in {
     Given
-    val decoders = new Decoders
+    val decoders:Decoders = null//new Decoders
     val statePatchDecoder = new StatePatchDecoder
     decoders register statePatchDecoder
 
@@ -19,7 +19,7 @@ class DecodersTest extends UnitTest {
 
   it should "fail when asked for not registered decoder" in {
     When
-    val decoders = new Decoders
+    val decoders:Decoders = null//new Decoders
     val unknownMessageType = 12345
 
     Expect

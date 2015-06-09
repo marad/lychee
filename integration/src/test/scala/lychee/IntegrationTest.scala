@@ -1,8 +1,8 @@
 package lychee
 
-import org.scalatest.FlatSpec
+import org.scalatest.{Matchers, FlatSpec}
 
-class IntegrationTest extends FlatSpec {
+class IntegrationTest extends FlatSpec with Matchers {
   def Given = None
   def When = None
   def Then = None

@@ -1,25 +1,42 @@
 package io.github.marad.lychee.common.net.encoders
 
+import com.google.inject.{Guice, AbstractModule}
 import io.github.marad.lychee.common.UnitTest
+import io.github.marad.lychee.common.messages.Message
+import io.netty.buffer.ByteBuf
+
+class TestEncoder extends MessageEncoder {
+  override def getMessageType: Int = 1
+  override def encode(message: Message): ByteBuf = ???
+}
 
 class EncodersTest extends UnitTest {
 
+  class TestModule extends AbstractModule {
+    override def configure(): Unit = {
+      bind(classOf[TestEncoder])
+      bind(classOf[Encoders])
+    }
+  }
+
+  val injector = Guice.createInjector(new TestModule)
+
   it should "find registered encoder" in {
     Given
-    val statePatchEncoder = new StatePatchEncoder
-    val encoders = new Encoders
-    encoders.register(statePatchEncoder)
+//    val statePatchEncoder = new StatePatchEncoder
+    val encoders = injector.getInstance(classOf[Encoders])
+//    encoders.register(statePatchEncoder)
 
     When
-    val result = encoders.findEncoder(statePatchEncoder.getMessageType)
+    val result = encoders.findEncoder(1)
 
     Then
-    result shouldBe statePatchEncoder
+    result should not be null
   }
 
   it should "fail when asked for unregistered encoder" in {
     Given
-    val encoders = new Encoders
+    val encoders = injector.getInstance(classOf[Encoders])
 
     Expect
     intercept[EncoderNotFound] {

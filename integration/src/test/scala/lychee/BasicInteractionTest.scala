@@ -1,21 +1,27 @@
 package lychee
 
-import io.github.marad.lychee.client.LycheeClient
-import io.github.marad.lychee.server.LycheeServer
+import com.google.inject.Guice
+import io.github.marad.lychee.client.{LycheeClientModule, LycheeClientConfig, LycheeClient}
+import io.github.marad.lychee.server.{LycheeServerModule, LycheeServerConfig, LycheeServer}
 
 class BasicInteractionTest extends IntegrationTest {
 
-  it should "create the server" in {
+  it should "synchronize state when client connects" in {
     Given
-    val server = new LycheeServer(8080)
-    val client = new LycheeClient("localhost", 8080)
+    val serverConfig = new LycheeServerConfig(8080, new ExampleState(5))
+    val serverInjector = Guice.createInjector(new LycheeServerModule(serverConfig))
+    val server = serverInjector.getInstance(classOf[LycheeServer])
+
+    val clientConfig = new LycheeClientConfig("localhost", 8080)
+    val clientInjector = Guice.createInjector(new LycheeClientModule(clientConfig))
+    val client = clientInjector.getInstance(classOf[LycheeClient])
 
     When
-    server.start(new ExampleState(5))
+    server.start()
     client.connect()
 
     Then
-    server.await()
-    // TODO: request some resources
+    server.await(1000)
+    client.getState shouldBe new ExampleState(5)
   }
 }

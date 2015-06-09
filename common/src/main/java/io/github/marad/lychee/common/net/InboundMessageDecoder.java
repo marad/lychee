@@ -1,5 +1,7 @@
 package io.github.marad.lychee.common.net;
 
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import io.github.marad.lychee.common.messages.Message;
 import io.github.marad.lychee.common.net.decoders.MessageDecoder;
 import io.github.marad.lychee.common.net.decoders.Decoders;
@@ -12,13 +14,15 @@ import java.util.List;
 import static io.github.marad.lychee.common.net.DecoderState.READ_CONTENT;
 import static io.github.marad.lychee.common.net.DecoderState.READ_SIZE;
 
+@Singleton
 public class InboundMessageDecoder extends ReplayingDecoder<DecoderState> {
+    private final Decoders decoders;
     private int size;
-    private Decoders decoders;
 
-    public InboundMessageDecoder() {
+    @Inject
+    public InboundMessageDecoder(Decoders decoders) {
         super(READ_SIZE);
-        this.decoders = Decoders.getInstance();
+        this.decoders = decoders;
     }
 
     @Override

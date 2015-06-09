@@ -1,19 +1,20 @@
-package io.github.marad.lychee.server.endpoints;
+package io.github.marad.lychee.server.netty;
 
-import io.github.marad.lychee.common.net.decoders.Decoders;
-import io.github.marad.lychee.common.net.encoders.Encoders;
+import io.github.marad.lychee.server.LycheeServerConfig;
 import io.netty.bootstrap.ServerBootstrap;
-import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelInboundHandlerAdapter;
-import io.netty.channel.ChannelOption;
-import io.netty.channel.EventLoopGroup;
+import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
+import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import java.io.Closeable;
 import java.io.IOException;
 
+@Singleton
 public class TcpServer implements Closeable {
+    private final ChannelInitializer<SocketChannel> initializer;
     private final int port;
 
     private EventLoopGroup bossGroup;
@@ -21,14 +22,16 @@ public class TcpServer implements Closeable {
     private ChannelFuture closeFuture;
     private boolean serverStarted = false;
 
-    public TcpServer(int port) {
-        this.port = port;
+    @Inject
+    public TcpServer(ChannelInitializer<SocketChannel> initializer, LycheeServerConfig config) {
+        this.initializer = initializer;
+        this.port = config.getTcpPort();
     }
 
-    public void start(ChannelInboundHandlerAdapter messageHandler) throws InterruptedException {
+    public void start() throws InterruptedException {
         bossGroup = new NioEventLoopGroup();
         workerGroup = new NioEventLoopGroup();
-        ServerBootstrap tcpServerSetup = setupTcpServer(messageHandler);
+        ServerBootstrap tcpServerSetup = setupTcpServer();
         closeFuture = tcpServerSetup.bind(port)
                 .sync().channel().closeFuture();
         serverStarted = true;
@@ -50,13 +53,18 @@ public class TcpServer implements Closeable {
         closeFuture.await();
     }
 
-    private ServerBootstrap setupTcpServer(ChannelInboundHandlerAdapter messageHandler) {
+    public void await(long timeoutMillis) throws InterruptedException {
+        assertStarted();
+        closeFuture.await(timeoutMillis);
+    }
+
+    private ServerBootstrap setupTcpServer() {
         return new ServerBootstrap()
                 .group(bossGroup, workerGroup)
                 .channel(NioServerSocketChannel.class)
                 .option(ChannelOption.SO_BACKLOG, 128)
                 .childOption(ChannelOption.SO_KEEPALIVE, true)
-                .childHandler(new ServerChannelInitializer(messageHandler));
+                .childHandler(initializer);
     }
 
     private void assertStarted() {

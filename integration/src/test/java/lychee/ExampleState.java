@@ -4,18 +4,18 @@ import com.google.common.base.Objects;
 import io.github.marad.lychee.api.State;
 
 public class ExampleState implements State {
-    private int version;
+    private int value;
 
-    public ExampleState(int version) {
-        this.version = version;
+    public ExampleState(int value) {
+        this.value = value;
     }
 
-    public int getVersion() {
-        return version;
+    public int getValue() {
+        return value;
     }
 
-    public void setVersion(int version) {
-        this.version = version;
+    public void setValue(int value) {
+        this.value = value;
     }
 
     @Override
@@ -23,16 +23,16 @@ public class ExampleState implements State {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ExampleState that = (ExampleState) o;
-        return Objects.equal(version, that.version);
+        return Objects.equal(value, that.value);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(version);
+        return Objects.hashCode(value);
     }
 
     @Override
     public String toString() {
-        return String.format("ExampleState{version=%d}", version);
+        return String.format("ExampleState{value=%d}", value);
     }
 }

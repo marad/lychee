@@ -1,25 +1,31 @@
 package io.github.marad.lychee.server;
 
-import io.github.marad.lychee.api.State;
-import io.github.marad.lychee.server.endpoints.TcpServer;
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
+import io.github.marad.lychee.server.netty.TcpServer;
 
 import java.io.Closeable;
 import java.io.IOException;
 
+@Singleton
 public class LycheeServer implements Closeable {
     private TcpServer tcpServer;
 
-    public LycheeServer(int tcpPort) {
-        tcpServer = new TcpServer(tcpPort);
+    @Inject
+    public LycheeServer(TcpServer tcpServer) {
+        this.tcpServer = tcpServer;
     }
 
-    public void start(State initialState) throws InterruptedException {
-        ServerMessageHandler serverMessageHandler = new ServerMessageHandler(initialState);
-        tcpServer.start(serverMessageHandler);
+    public void start() throws InterruptedException {
+        tcpServer.start();
     }
 
     public void await() throws InterruptedException {
         tcpServer.await();
+    }
+
+    public void await(long timeoutMillis) throws InterruptedException {
+        tcpServer.await(timeoutMillis);
     }
 
     @Override

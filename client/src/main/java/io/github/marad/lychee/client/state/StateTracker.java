@@ -1,13 +1,17 @@
 package io.github.marad.lychee.client.state;
 
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import io.github.marad.lychee.api.State;
 
-public class StateTracker<S extends State> {
-    private final StateChangeNotifier<S> stateChangeNotifier;
+@Singleton
+public class StateTracker {
+    private final StateChangeNotifier stateChangeNotifier;
     private long stateSeq;
-    private S currentState;
+    private State currentState;
 
-    public StateTracker(StateChangeNotifier<S> stateChangeNotifier) {
+    @Inject
+    public StateTracker(StateChangeNotifier stateChangeNotifier) {
         this.stateChangeNotifier = stateChangeNotifier;
     }
 
@@ -15,12 +19,12 @@ public class StateTracker<S extends State> {
         return stateSeq;
     }
 
-    public S getCurrentState() {
+    public State getCurrentState() {
         return currentState;
     }
 
-    public void update(long stateSeq, S state) {
-        S previousState = currentState;
+    public void update(long stateSeq, State state) {
+        State previousState = currentState;
         this.currentState = state;
         this.stateSeq = stateSeq;
         stateChangeNotifier.notifyStateChanged(previousState, currentState);

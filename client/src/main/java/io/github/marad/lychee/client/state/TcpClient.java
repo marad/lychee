@@ -1,7 +1,8 @@
 package io.github.marad.lychee.client.state;
 
-import io.github.marad.lychee.client.ClientChannelInitializer;
+import com.google.inject.Inject;
 import io.github.marad.lychee.client.ClientNotConnected;
+import io.github.marad.lychee.client.LycheeClientConfig;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -9,23 +10,21 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 
 public class TcpClient {
-    private final String hostname;
-    private final int tcpPort;
-
+    private final LycheeClientConfig lycheeClientConfig;
+    private final ChannelInitializer<SocketChannel> initializer;
     private final EventLoopGroup workerGroup = new NioEventLoopGroup();
     private Channel channel;
     private boolean connected = false;
 
-    public TcpClient(String hostname, int tcpPort) {
-        this.hostname = hostname;
-        this.tcpPort = tcpPort;
+    @Inject
+    public TcpClient(LycheeClientConfig lycheeClientConfig, ChannelInitializer<SocketChannel> initializer) {
+        this.lycheeClientConfig = lycheeClientConfig;
+        this.initializer = initializer;
     }
 
-    public void start(ChannelInboundHandlerAdapter messageHandler) {
-        ClientChannelInitializer initializer = new ClientChannelInitializer(messageHandler);
-        Bootstrap tcpBootstrap = setupTcpClient(initializer);
-
-        channel = tcpBootstrap.connect(hostname, tcpPort).channel();
+    public void start() {
+        Bootstrap tcpBootstrap = setupTcpClient();
+        channel = tcpBootstrap.connect(lycheeClientConfig.getHostname(), lycheeClientConfig.getTcpPort()).channel();
         connected = true;
     }
 
@@ -39,7 +38,7 @@ public class TcpClient {
         channel.disconnect();
     }
 
-    private Bootstrap setupTcpClient(ChannelInitializer<SocketChannel> initializer) {
+    private Bootstrap setupTcpClient() {
         return new Bootstrap().group(workerGroup)
                 .channel(NioSocketChannel.class)
                 .option(ChannelOption.SO_KEEPALIVE, true)
