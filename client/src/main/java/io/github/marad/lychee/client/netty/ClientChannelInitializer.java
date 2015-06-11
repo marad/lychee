@@ -16,7 +16,7 @@ public class ClientChannelInitializer extends ChannelInitializer<SocketChannel> 
     public ClientChannelInitializer(
             InboundMessageDecoder messageDecoder,
             OutboundMessageEncoder messageEncoder,
-            ChannelInboundHandlerAdapter messageHandler) {
+            ClientMessageHandler messageHandler) {
         this.messageDecoder = messageDecoder;
         this.messageEncoder = messageEncoder;
         this.messageHandler = messageHandler;

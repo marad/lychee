@@ -4,22 +4,10 @@ import io.github.marad.lychee.api.State;
 import io.github.marad.lychee.common.Patcher;
 import io.github.marad.lychee.common.StateSerializer;
 
-public class StatePatch {
-    private final long stateSeq;
-    private final byte[] patch;
-
-    public StatePatch(long stateSeq, byte[] patch) {
-        this.stateSeq = stateSeq;
-        this.patch = patch;
-    }
-
-    public State apply(State oldState) {
+public class StatePatchApplier {
+    public static State apply(State oldState, byte[] patch) {
         byte[] oldStateData = StateSerializer.serialize(oldState);
         byte[] patched = Patcher.patch(oldStateData, patch);
         return StateSerializer.deserialize(patched);
-    }
-
-    public long getStateSeq() {
-        return stateSeq;
     }
 }

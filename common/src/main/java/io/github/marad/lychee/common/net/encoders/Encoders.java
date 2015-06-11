@@ -3,14 +3,10 @@ package io.github.marad.lychee.common.net.encoders;
 import com.google.inject.Binding;
 import com.google.inject.Injector;
 import com.google.inject.Key;
-import com.google.inject.TypeLiteral;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 
 @Singleton
 public class Encoders {
@@ -19,17 +15,7 @@ public class Encoders {
     @Inject
     public Encoders(Injector injector) {
         this.encoderMap = new HashMap<Integer, MessageEncoder>();
-
-        Map<Key<?>, Binding<?>> allBindings = injector.getAllBindings();
-        for(Map.Entry<Key<?>, Binding<?>> entry : allBindings.entrySet()) {
-            System.out.println(entry.getKey() + ": " + entry.getValue());
-        }
-
-
-        List<Binding<MessageEncoder>> bindings = injector.findBindingsByType(new TypeLiteral<MessageEncoder>(){});
-        for(Binding<MessageEncoder> binding : bindings) {
-            register(binding.getProvider().get());
-        }
+        registerAllMessageDecoders(injector);
     }
 
     public  void register(MessageEncoder encoder) {
@@ -42,5 +28,17 @@ public class Encoders {
             return encoder;
         }
         throw new EncoderNotFound(messageType);
+    }
+
+    private void registerAllMessageDecoders(Injector injector) {
+        for(Key<?> key : injector.getAllBindings().keySet()) {
+            if (isMessageEncoderImplementation(key)) {
+                MessageEncoder encoder = (MessageEncoder) injector.getInstance(key);
+                register(encoder);
+            }
+        }
+    }
+    private boolean isMessageEncoderImplementation(Key<?> key) {
+        return MessageEncoder.class.isAssignableFrom(key.getTypeLiteral().getRawType());
     }
 }

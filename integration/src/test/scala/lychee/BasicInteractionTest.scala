@@ -9,12 +9,11 @@ class BasicInteractionTest extends IntegrationTest {
   it should "synchronize state when client connects" in {
     Given
     val serverConfig = new LycheeServerConfig(8080, new ExampleState(5))
-    val serverInjector = Guice.createInjector(new LycheeServerModule(serverConfig))
-    val server = serverInjector.getInstance(classOf[LycheeServer])
-
     val clientConfig = new LycheeClientConfig("localhost", 8080)
-    val clientInjector = Guice.createInjector(new LycheeClientModule(clientConfig))
-    val client = clientInjector.getInstance(classOf[LycheeClient])
+
+    val injector = Guice.createInjector(new LycheeServerModule(serverConfig), new LycheeClientModule(clientConfig))
+    val server = injector.getInstance(classOf[LycheeServer])
+    val client = injector.getInstance(classOf[LycheeClient])
 
     When
     server.start()

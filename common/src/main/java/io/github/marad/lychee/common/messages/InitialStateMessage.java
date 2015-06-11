@@ -3,10 +3,10 @@ package io.github.marad.lychee.common.messages;
 import com.google.common.base.Objects;
 import io.github.marad.lychee.api.State;
 
-public class StateMessage implements Message {
+public class InitialStateMessage implements Message {
     private final State state;
 
-    public StateMessage(State state) {
+    public InitialStateMessage(State state) {
         this.state = state;
     }
 
@@ -23,7 +23,7 @@ public class StateMessage implements Message {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        StateMessage that = (StateMessage) o;
+        InitialStateMessage that = (InitialStateMessage) o;
         return Objects.equal(state, that.state);
     }
 

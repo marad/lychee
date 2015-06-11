@@ -1,7 +1,7 @@
 package io.github.marad.lychee.server.netty;
 
 import io.github.marad.lychee.api.State;
-import io.github.marad.lychee.common.messages.StateMessage;
+import io.github.marad.lychee.common.messages.InitialStateMessage;
 import io.github.marad.lychee.server.LycheeServerConfig;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
@@ -24,7 +24,7 @@ public class ServerMessageHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        StateMessage message = new StateMessage(initialState);
+        InitialStateMessage message = new InitialStateMessage(initialState);
         logger.info("Sending initial state {}", message);
         ctx.writeAndFlush(message);
     }

@@ -3,6 +3,7 @@ package io.github.marad.lychee.client.state;
 import com.google.inject.Inject;
 import io.github.marad.lychee.client.ClientNotConnected;
 import io.github.marad.lychee.client.LycheeClientConfig;
+import io.github.marad.lychee.client.netty.ClientChannelInitializer;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -17,7 +18,7 @@ public class TcpClient {
     private boolean connected = false;
 
     @Inject
-    public TcpClient(LycheeClientConfig lycheeClientConfig, ChannelInitializer<SocketChannel> initializer) {
+    public TcpClient(LycheeClientConfig lycheeClientConfig, ClientChannelInitializer initializer) {
         this.lycheeClientConfig = lycheeClientConfig;
         this.initializer = initializer;
     }

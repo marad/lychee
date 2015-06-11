@@ -1,7 +1,7 @@
 package io.github.marad.lychee.common.net.encoders;
 
 import io.github.marad.lychee.common.messages.Message;
-import io.github.marad.lychee.common.messages.StatePatch;
+import io.github.marad.lychee.common.messages.StatePatchMessage;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 
@@ -15,10 +15,10 @@ public class StatePatchEncoder implements MessageEncoder {
 
     @Override
     public ByteBuf encode(Message message) {
-        StatePatch statePatch = (StatePatch) message;
-        ByteBuf result = Unpooled.buffer(4 + statePatch.getPatch().length);
-        result.writeInt((int)statePatch.getStateToPatchSeq());
-        result.writeBytes(statePatch.getPatch());
+        StatePatchMessage statePatchMessage = (StatePatchMessage) message;
+        ByteBuf result = Unpooled.buffer(4 + statePatchMessage.getPatch().length);
+        result.writeInt((int) statePatchMessage.getStateToPatchSeq());
+        result.writeBytes(statePatchMessage.getPatch());
         return result;
     }
 }

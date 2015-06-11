@@ -1,21 +1,22 @@
-package io.github.marad.lychee.common.netty;
+package io.github.marad.lychee.server.netty;
 
 import com.google.inject.Inject;
 import io.github.marad.lychee.common.net.InboundMessageDecoder;
 import io.github.marad.lychee.common.net.OutboundMessageEncoder;
 import io.netty.channel.ChannelInboundHandlerAdapter;
+import io.netty.channel.ChannelInitializer;
 import io.netty.channel.socket.SocketChannel;
 
-public class BaseChannelInitializer extends io.netty.channel.ChannelInitializer<SocketChannel> {
+public class ServerChannelInitializer extends ChannelInitializer<SocketChannel> {
     private final InboundMessageDecoder messageDecoder;
     private final OutboundMessageEncoder messageEncoder;
     private final ChannelInboundHandlerAdapter messageHandler;
 
     @Inject
-    public BaseChannelInitializer(
+    public ServerChannelInitializer(
             InboundMessageDecoder messageDecoder,
             OutboundMessageEncoder messageEncoder,
-            ChannelInboundHandlerAdapter messageHandler) {
+            ServerMessageHandler messageHandler) {
         this.messageDecoder = messageDecoder;
         this.messageEncoder = messageEncoder;
         this.messageHandler = messageHandler;

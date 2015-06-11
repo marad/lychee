@@ -23,7 +23,7 @@ public class TcpServer implements Closeable {
     private boolean serverStarted = false;
 
     @Inject
-    public TcpServer(ChannelInitializer<SocketChannel> initializer, LycheeServerConfig config) {
+    public TcpServer(ServerChannelInitializer initializer, LycheeServerConfig config) {
         this.initializer = initializer;
         this.port = config.getTcpPort();
     }

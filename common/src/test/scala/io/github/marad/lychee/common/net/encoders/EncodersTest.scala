@@ -3,11 +3,14 @@ package io.github.marad.lychee.common.net.encoders
 import com.google.inject.{Guice, AbstractModule}
 import io.github.marad.lychee.common.UnitTest
 import io.github.marad.lychee.common.messages.Message
+import io.github.marad.lychee.common.net.encoders.EncodersTest.TestEncoder
 import io.netty.buffer.ByteBuf
 
-class TestEncoder extends MessageEncoder {
-  override def getMessageType: Int = 1
-  override def encode(message: Message): ByteBuf = ???
+object EncodersTest {
+  class TestEncoder extends MessageEncoder {
+    override def getMessageType: Int = 1
+    override def encode(message: Message): ByteBuf = ???
+  }
 }
 
 class EncodersTest extends UnitTest {
@@ -23,9 +26,7 @@ class EncodersTest extends UnitTest {
 
   it should "find registered encoder" in {
     Given
-//    val statePatchEncoder = new StatePatchEncoder
     val encoders = injector.getInstance(classOf[Encoders])
-//    encoders.register(statePatchEncoder)
 
     When
     val result = encoders.findEncoder(1)

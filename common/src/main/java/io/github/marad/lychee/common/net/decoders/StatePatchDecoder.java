@@ -1,7 +1,7 @@
 package io.github.marad.lychee.common.net.decoders;
 
 import io.github.marad.lychee.common.messages.Message;
-import io.github.marad.lychee.common.messages.StatePatch;
+import io.github.marad.lychee.common.messages.StatePatchMessage;
 import io.netty.buffer.ByteBuf;
 
 import static io.github.marad.lychee.common.messages.MessageType.STATE_PATCH;
@@ -18,6 +18,6 @@ public class StatePatchDecoder implements MessageDecoder {
         int dataSize = frame.readableBytes();
         byte[] data = new byte [dataSize];
         frame.readBytes(data);
-        return new StatePatch(stateSeq, data);
+        return new StatePatchMessage(stateSeq, data);
     }
 }

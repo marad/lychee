@@ -1,13 +1,11 @@
 package io.github.marad.lychee.common.net.decoders;
 
-import com.google.inject.Binding;
 import com.google.inject.Injector;
-import com.google.inject.TypeLiteral;
+import com.google.inject.Key;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.util.HashMap;
-import java.util.List;
 
 @Singleton
 public class Decoders {
@@ -16,11 +14,7 @@ public class Decoders {
     @Inject
     public Decoders(Injector injector) {
         this.decoders = new HashMap<Integer, MessageDecoder>();
-
-        List<Binding<MessageDecoder>> bindings = injector.findBindingsByType(new TypeLiteral<MessageDecoder>(){});
-        for(Binding<MessageDecoder> binding : bindings) {
-            register(binding.getProvider().get());
-        }
+        registerAllMessageDecoders(injector);
     }
 
     public void register(MessageDecoder decoder) {
@@ -33,5 +27,18 @@ public class Decoders {
             return decoder;
         }
         throw new DecoderNotFound(messageType);
+    }
+
+    private void registerAllMessageDecoders(Injector injector) {
+        for(Key<?> key : injector.getAllBindings().keySet()) {
+            if (isMessageDecoderImplementation(key)) {
+                MessageDecoder encoder = (MessageDecoder) injector.getInstance(key);
+                register(encoder);
+            }
+        }
+    }
+
+    private boolean isMessageDecoderImplementation(Key<?> key) {
+        return MessageDecoder.class.isAssignableFrom(key.getTypeLiteral().getRawType());
     }
 }

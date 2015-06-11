@@ -4,11 +4,11 @@ import com.google.common.base.Objects;
 
 import java.util.Arrays;
 
-public class StatePatch implements Message {
+public class StatePatchMessage implements Message {
     private final long stateToPatchSeq;
     private final byte[] patch;
 
-    public StatePatch(long stateToPatchSeq, byte[] patch) {
+    public StatePatchMessage(long stateToPatchSeq, byte[] patch) {
         this.stateToPatchSeq = stateToPatchSeq;
         this.patch = patch;
     }
@@ -30,7 +30,7 @@ public class StatePatch implements Message {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        StatePatch that = (StatePatch) o;
+        StatePatchMessage that = (StatePatchMessage) o;
         return Objects.equal(stateToPatchSeq, that.stateToPatchSeq) &&
                 Arrays.equals(patch, that.patch);
     }

@@ -4,10 +4,10 @@ import io.github.marad.lychee.api.State;
 import io.github.marad.lychee.common.StateSerializer;
 import io.github.marad.lychee.common.messages.Message;
 import io.github.marad.lychee.common.messages.MessageType;
-import io.github.marad.lychee.common.messages.StateMessage;
+import io.github.marad.lychee.common.messages.InitialStateMessage;
 import io.netty.buffer.ByteBuf;
 
-public class StateMessageDecoder implements MessageDecoder {
+public class InitialStateMessageDecoder implements MessageDecoder {
     @Override
     public int getMessageType() {
         return MessageType.STATE.code();
@@ -19,6 +19,6 @@ public class StateMessageDecoder implements MessageDecoder {
         byte[] data = new byte [size];
         byteBuf.readBytes(data);
         State state = StateSerializer.deserialize(data);
-        return new StateMessage(state);
+        return new InitialStateMessage(state);
     }
 }

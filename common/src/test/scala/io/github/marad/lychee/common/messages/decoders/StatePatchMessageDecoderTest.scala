@@ -1,11 +1,11 @@
 package io.github.marad.lychee.common.messages.decoders
 
 import io.github.marad.lychee.common.UnitTest
-import io.github.marad.lychee.common.messages.StatePatch
+import io.github.marad.lychee.common.messages.StatePatchMessage
 import io.github.marad.lychee.common.net.decoders.StatePatchDecoder
 import io.netty.buffer.Unpooled
 
-class StatePatchDecoderTest extends UnitTest {
+class StatePatchMessageDecoderTest extends UnitTest {
 
   it should "decode valid packet" in {
     Given
@@ -14,7 +14,7 @@ class StatePatchDecoderTest extends UnitTest {
     val packet = createPacket(stateSeq, patch)
 
     When
-    val message = (new StatePatchDecoder).decode(packet).asInstanceOf[StatePatch]
+    val message = (new StatePatchDecoder).decode(packet).asInstanceOf[StatePatchMessage]
 
     Then
     message.getStateToPatchSeq shouldBe stateSeq

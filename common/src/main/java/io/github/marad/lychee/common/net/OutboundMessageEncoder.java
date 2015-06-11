@@ -1,7 +1,6 @@
 package io.github.marad.lychee.common.net;
 
 import com.google.inject.Inject;
-import com.google.inject.Singleton;
 import io.github.marad.lychee.common.messages.Message;
 import io.github.marad.lychee.common.net.encoders.Encoders;
 import io.github.marad.lychee.common.net.encoders.MessageEncoder;
@@ -9,7 +8,6 @@ import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToByteEncoder;
 
-@Singleton
 public class OutboundMessageEncoder extends MessageToByteEncoder<Message> {
     private final Encoders encoders;
 
