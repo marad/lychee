@@ -2,6 +2,8 @@ package io.github.marad.lychee.common.net.decoders;
 
 import com.google.inject.Injector;
 import com.google.inject.Key;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;

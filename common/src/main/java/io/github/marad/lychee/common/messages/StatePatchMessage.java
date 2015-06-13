@@ -14,8 +14,8 @@ public class StatePatchMessage implements Message {
     }
 
     @Override
-    public MessageType getType() {
-        return MessageType.STATE_PATCH;
+    public short getType() {
+        return MessageType.STATE_PATCH.code();
     }
 
     public long getStateToPatchSeq() {

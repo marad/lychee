@@ -11,8 +11,8 @@ public class InitialStateMessage implements Message {
     }
 
     @Override
-    public MessageType getType() {
-        return MessageType.STATE;
+    public short getType() {
+        return MessageType.STATE.code();
     }
 
     public State getState() {

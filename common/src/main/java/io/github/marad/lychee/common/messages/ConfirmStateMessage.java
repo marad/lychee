@@ -12,8 +12,8 @@ public class ConfirmStateMessage implements Message {
     }
 
     @Override
-    public MessageType getType() {
-        return MessageType.CONFIRM_STATE;
+    public short getType() {
+        return MessageType.CONFIRM_STATE.code();
     }
 
     @Override

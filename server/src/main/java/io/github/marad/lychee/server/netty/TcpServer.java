@@ -1,30 +1,33 @@
 package io.github.marad.lychee.server.netty;
 
+import io.github.marad.lychee.common.messages.Message;
 import io.github.marad.lychee.server.LycheeServerConfig;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
+import io.netty.channel.group.ChannelGroupFuture;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import java.io.Closeable;
-import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 @Singleton
-public class TcpServer implements Closeable {
+public class TcpServer {
     private final ChannelInitializer<SocketChannel> initializer;
+    private final TcpBroadcaster broadcaster;
     private final int port;
 
     private EventLoopGroup bossGroup;
     private EventLoopGroup workerGroup;
-    private ChannelFuture closeFuture;
+    private Channel channel;
     private boolean serverStarted = false;
 
     @Inject
-    public TcpServer(ServerChannelInitializer initializer, LycheeServerConfig config) {
+    public TcpServer(ServerChannelInitializer initializer, LycheeServerConfig config, TcpBroadcaster broadcaster) {
         this.initializer = initializer;
+        this.broadcaster = broadcaster;
         this.port = config.getTcpPort();
     }
 
@@ -32,16 +35,22 @@ public class TcpServer implements Closeable {
         bossGroup = new NioEventLoopGroup();
         workerGroup = new NioEventLoopGroup();
         ServerBootstrap tcpServerSetup = setupTcpServer();
-        closeFuture = tcpServerSetup.bind(port)
-                .sync().channel().closeFuture();
+
+        channel = tcpServerSetup.bind(port)
+                .sync().channel();
         serverStarted = true;
     }
 
-    @Override
-    public void close() throws IOException {
+    public ChannelGroupFuture send(Message message) {
+        return broadcaster.broadcast(message);
+    }
+
+    public ChannelFuture close() {
         assertStarted();
         bossGroup.shutdownGracefully();
         workerGroup.shutdownGracefully();
+        channel.close();
+        return channel.closeFuture();
     }
 
     public boolean isStarted() {
@@ -50,12 +59,17 @@ public class TcpServer implements Closeable {
 
     public void await() throws InterruptedException {
         assertStarted();
-        closeFuture.await();
+        channel.closeFuture().await();
     }
 
     public void await(long timeoutMillis) throws InterruptedException {
         assertStarted();
-        closeFuture.await(timeoutMillis);
+        channel.closeFuture().await(timeoutMillis);
+    }
+
+    public void await(long timeout, TimeUnit timeUnit) throws InterruptedException {
+        assertStarted();
+        channel.closeFuture().await(timeout, timeUnit);
     }
 
     private ServerBootstrap setupTcpServer() {

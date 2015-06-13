@@ -2,11 +2,11 @@ package io.github.marad.lychee.server;
 
 import io.github.marad.lychee.api.State;
 
-public class LycheeServerConfig {
+public class LycheeServerConfig<T extends State> {
     private final int tcpPort;
-    private final State initialState;
+    private final T initialState;
 
-    public LycheeServerConfig(int tcpPort, State initialState) {
+    public LycheeServerConfig(int tcpPort, T initialState) {
         this.tcpPort = tcpPort;
         this.initialState = initialState;
     }
@@ -15,7 +15,7 @@ public class LycheeServerConfig {
         return tcpPort;
     }
 
-    public State getInitialState() {
+    public T getInitialState() {
         return initialState;
     }
 }

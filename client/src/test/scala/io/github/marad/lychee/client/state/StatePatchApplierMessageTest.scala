@@ -4,6 +4,7 @@ import com.nothome.delta.Delta
 import io.github.marad.lychee.api.State
 import io.github.marad.lychee.client.UnitTest
 import io.github.marad.lychee.common.StateSerializer
+import io.github.marad.lychee.common.net.StateInfo
 
 class StatePatchApplierMessageTest extends UnitTest {
   val delta = new Delta
@@ -18,8 +19,10 @@ class StatePatchApplierMessageTest extends UnitTest {
     val stateAfter = new ExampleState(7)
     val patch = delta.compute(stateBefore.serialized, stateAfter.serialized)
 
+    val applier = new StatePatchApplier(new StateInfo(classOf[ExampleState]))
+
     When
-    def result = StatePatchApplier.apply(new ExampleState(5), patch)
+    def result = applier.apply(new ExampleState(5), patch)
 
     Then
     result shouldBe stateAfter

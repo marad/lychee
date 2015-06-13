@@ -5,6 +5,10 @@ import io.github.marad.lychee.api.State;
 
 public class ExampleState implements State {
     private int value;
+    private int hello = 8;
+
+    public ExampleState() {
+    }
 
     public ExampleState(int value) {
         this.value = value;

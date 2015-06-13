@@ -10,6 +10,8 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 
+import java.util.concurrent.TimeUnit;
+
 public class TcpClient {
     private final LycheeClientConfig lycheeClientConfig;
     private final ChannelInitializer<SocketChannel> initializer;
@@ -29,14 +31,23 @@ public class TcpClient {
         connected = true;
     }
 
+    public ChannelFuture close() {
+        return channel.close();
+    }
+
     public void await() throws InterruptedException {
         assertConnected();
         channel.closeFuture().await();
     }
 
-    public void disconnect() {
+    public void await(long timeoutMillis) throws InterruptedException {
         assertConnected();
-        channel.disconnect();
+        channel.closeFuture().await(timeoutMillis);
+    }
+
+    public void await(long timeout, TimeUnit timeUnit) throws InterruptedException {
+        assertConnected();
+        channel.closeFuture().await(timeout, timeUnit);
     }
 
     private Bootstrap setupTcpClient() {

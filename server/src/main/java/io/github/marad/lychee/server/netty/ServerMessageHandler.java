@@ -15,15 +15,18 @@ import javax.inject.Singleton;
 @Singleton
 @Named("ServerMessageHandler")
 public class ServerMessageHandler extends ChannelInboundHandlerAdapter {
+    private final TcpBroadcaster broadcaster;
     private State initialState;
 
     @Inject
-    public ServerMessageHandler(LycheeServerConfig lycheeServerConfig) {
+    public ServerMessageHandler(LycheeServerConfig lycheeServerConfig, TcpBroadcaster broadcaster) {
+        this.broadcaster = broadcaster;
         this.initialState = lycheeServerConfig.getInitialState();
     }
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
+        broadcaster.addChannel(ctx.channel());
         InitialStateMessage message = new InitialStateMessage(initialState);
         logger.info("Sending initial state {}", message);
         ctx.writeAndFlush(message);
@@ -32,12 +35,12 @@ public class ServerMessageHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         logger.info("Received {}", msg);
-        ctx.writeAndFlush(msg);
+//        ctx.writeAndFlush(msg);
     }
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-        cause.printStackTrace();
+        logger.error("Error caught", cause);
         ctx.close();
     }
 

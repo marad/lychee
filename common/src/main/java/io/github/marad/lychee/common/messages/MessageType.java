@@ -4,16 +4,15 @@ public enum MessageType {
     STATE(0),
     STATE_PATCH(1),
     CONFIRM_STATE(2),
-    STRING(3)
-    ;
+    STRING(3);
 
-    private final int code;
+    private final short code;
 
     MessageType(int code) {
-        this.code = code;
+        this.code = (short) code;
     }
 
-    public int code() {
+    public short code() {
         return code;
     }
 }

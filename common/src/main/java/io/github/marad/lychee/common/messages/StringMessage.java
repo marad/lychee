@@ -14,8 +14,8 @@ public class StringMessage implements Message {
     }
 
     @Override
-    public MessageType getType() {
-        return MessageType.STRING;
+    public short getType() {
+        return MessageType.STRING.code();
     }
 
     @Override
