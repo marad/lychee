@@ -32,13 +32,11 @@ public class LycheeModule extends AbstractModule {
         bind(InitialStateMessageEncoder.class);
         bind(StatePatchEncoder.class);
         bind(ConfirmStateMessageEncoder.class);
-        bind(StringMessageEncoder.class);
     }
 
     public void bindMessageDecoders() {
         bind(InitialStateMessageDecoder.class);
         bind(StatePatchDecoder.class);
         bind(ConfirmStateMessageDecoder.class);
-        bind(StringMessageDecoder.class);
     }
 }

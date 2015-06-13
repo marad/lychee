@@ -22,8 +22,8 @@ class BasicInteractionTest extends IntegrationTest {
     client.connect()
     
     def closeAndWait = {
-      server.closeAndWait(100)
-      client.closeAndWait(100)
+      server.closeAndWait(1000)
+      client.closeAndWait(1000)
     }
   }
 
