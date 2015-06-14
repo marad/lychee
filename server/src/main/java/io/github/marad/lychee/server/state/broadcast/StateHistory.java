@@ -1,4 +1,4 @@
-package io.github.marad.lychee.server.state;
+package io.github.marad.lychee.server.state.broadcast;
 
 import com.google.common.base.Preconditions;
 import io.github.marad.lychee.api.State;
@@ -9,22 +9,23 @@ import java.util.Map;
 
 public class StateHistory {
     private long nextVersion = 1;
-    private final Map<Long, byte[]> versionMap = new HashMap<Long, byte[]>();
+    private final Map<Long, StateSnapshot> versionMap = new HashMap<Long, StateSnapshot>();
 
-    public long createSnapshot(State state) {
+    public StateSnapshot createSnapshot(State state) {
         Preconditions.checkNotNull(state);
         long version = getNextVersion();
         byte[] data = StateSerializer.serialize(state);
-        versionMap.put(version, data);
-        return version;
+        StateSnapshot stateSnapshot = new StateSnapshot(version, data);
+        versionMap.put(version, stateSnapshot);
+        return stateSnapshot;
     }
 
-    public byte[] getSnapshot(long version) {
-        byte[] data = versionMap.get(version);
-        if (data == null) {
+    public StateSnapshot getSnapshot(long version) {
+        StateSnapshot stateSnapshot = versionMap.get(version);
+        if (stateSnapshot == null) {
             throw new StateVersionNotFound(version);
         }
-        return data;
+        return stateSnapshot;
     }
 
     public void removeSnapshot(long version) {

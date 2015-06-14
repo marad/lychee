@@ -6,7 +6,8 @@ import io.github.marad.lychee.server.netty.ServerChannelInitializer;
 import io.github.marad.lychee.server.netty.TcpBroadcaster;
 import io.github.marad.lychee.server.netty.TcpServer;
 import io.github.marad.lychee.server.netty.ServerMessageHandler;
-import io.github.marad.lychee.server.state.StateHistory;
+import io.github.marad.lychee.server.state.ServerStateTracker;
+import io.github.marad.lychee.server.state.broadcast.StateHistory;
 
 public class LycheeServerModule extends AbstractModule {
     private final LycheeServerConfig config;
@@ -26,5 +27,6 @@ public class LycheeServerModule extends AbstractModule {
         bind(StateUpdater.class);
         bind(TcpBroadcaster.class);
         bind(StateHistory.class);
+        bind(ServerStateTracker.class);
     }
 }

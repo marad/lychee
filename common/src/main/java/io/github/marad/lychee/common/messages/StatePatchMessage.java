@@ -39,7 +39,7 @@ public class StatePatchMessage implements Message {
         StatePatchMessage that = (StatePatchMessage) o;
         return Objects.equal(previousStateVersion, that.previousStateVersion) &&
                 Objects.equal(currentStateVersion, that.currentStateVersion) &&
-                Objects.equal(patch, that.patch);
+                Arrays.equals(patch, that.patch);
     }
 
     @Override

@@ -14,10 +14,11 @@ public class StatePatchDecoder implements MessageDecoder {
 
     @Override
     public Message decode(ByteBuf frame) {
-        long stateSeq = frame.readUnsignedInt();
+        long previousStateVersion = frame.readUnsignedInt();
+        long currentStateVersion = frame.readUnsignedInt();
         int dataSize = frame.readableBytes();
         byte[] data = new byte [dataSize];
         frame.readBytes(data);
-        return new StatePatchMessage(stateSeq, currentStateVersion, data);
+        return new StatePatchMessage(previousStateVersion, currentStateVersion, data);
     }
 }

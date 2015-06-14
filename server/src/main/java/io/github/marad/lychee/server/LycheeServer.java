@@ -4,6 +4,7 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import io.github.marad.lychee.common.messages.Message;
 import io.github.marad.lychee.server.netty.TcpServer;
+import io.github.marad.lychee.server.state.ServerStateTracker;
 import io.netty.channel.group.ChannelGroupFuture;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
@@ -13,11 +14,13 @@ import java.util.concurrent.TimeUnit;
 
 @Singleton
 public class LycheeServer implements Closeable {
-    private TcpServer tcpServer;
+    private final TcpServer tcpServer;
+    private final ServerStateTracker serverStateTracker;
 
     @Inject
-    public LycheeServer(TcpServer tcpServer) {
+    public LycheeServer(TcpServer tcpServer, ServerStateTracker serverStateTracker) {
         this.tcpServer = tcpServer;
+        this.serverStateTracker = serverStateTracker;
     }
 
     public void start() throws InterruptedException {

@@ -1,6 +1,7 @@
-package io.github.marad.lychee.server.state
+package io.github.marad.lychee.server.state.broadcast
 
-import io.github.marad.lychee.common.{StateSerializer, ExampleState, UnitTest}
+import io.github.marad.lychee.common.{ExampleState, StateSerializer, UnitTest}
+import StateVersionNotFound
 
 class StateHistoryTest extends UnitTest {
   it should "create binary snapshot from state" in {
@@ -10,14 +11,14 @@ class StateHistoryTest extends UnitTest {
     val s2 = new ExampleState(2)
 
     When
-    val v1 = stateHistory.createSnapshot(s1)
-    val v2 = stateHistory.createSnapshot(s2)
+    val v1 = stateHistory.createSnapshot(s1).getVersion
+    val v2 = stateHistory.createSnapshot(s2).getVersion
 
     Then
     v1 shouldBe 1
     v2 shouldBe 2
-    stateHistory.getSnapshot(v1) shouldBe StateSerializer.serialize(s1)
-    stateHistory.getSnapshot(v2) shouldBe StateSerializer.serialize(s2)
+    stateHistory.getSnapshot(v1).getData shouldBe StateSerializer.serialize(s1)
+    stateHistory.getSnapshot(v2).getData shouldBe StateSerializer.serialize(s2)
   }
 
   it should "fail when creating snapshot from null" in {
@@ -44,7 +45,7 @@ class StateHistoryTest extends UnitTest {
     Given
     val stateHistory = new StateHistory
     val s1 = new ExampleState(1)
-    val v1 = stateHistory.createSnapshot(s1)
+    val v1 = stateHistory.createSnapshot(s1).getVersion
 
     When
     stateHistory.removeSnapshot(v1)

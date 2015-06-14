@@ -7,7 +7,6 @@ import io.github.marad.lychee.server.ClientTracker;
 import io.github.marad.lychee.server.LycheeServerConfig;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
-import io.netty.channel.socket.nio.NioSocketChannel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

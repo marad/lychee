@@ -9,6 +9,7 @@ public class Client {
 
     public Client(Channel tcpChannel) {
         this.tcpChannel = tcpChannel;
+        stateVersion = 1;
     }
 
     public Channel getTcpChannel() {
