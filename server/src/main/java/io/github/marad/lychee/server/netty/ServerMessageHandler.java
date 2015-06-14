@@ -2,9 +2,12 @@ package io.github.marad.lychee.server.netty;
 
 import io.github.marad.lychee.api.State;
 import io.github.marad.lychee.common.messages.InitialStateMessage;
+import io.github.marad.lychee.server.Client;
+import io.github.marad.lychee.server.ClientTracker;
 import io.github.marad.lychee.server.LycheeServerConfig;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
+import io.netty.channel.socket.nio.NioSocketChannel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,17 +19,23 @@ import javax.inject.Singleton;
 @Named("ServerMessageHandler")
 public class ServerMessageHandler extends ChannelInboundHandlerAdapter {
     private final TcpBroadcaster broadcaster;
+    private final ClientTracker clientTracker;
     private State initialState;
 
     @Inject
-    public ServerMessageHandler(LycheeServerConfig lycheeServerConfig, TcpBroadcaster broadcaster) {
+    public ServerMessageHandler(
+            LycheeServerConfig lycheeServerConfig,
+            TcpBroadcaster broadcaster,
+            ClientTracker clientTracker) {
         this.broadcaster = broadcaster;
+        this.clientTracker = clientTracker;
         this.initialState = lycheeServerConfig.getInitialState();
     }
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         broadcaster.addChannel(ctx.channel());
+        clientTracker.add(new Client(ctx.channel()));
         InitialStateMessage message = new InitialStateMessage(initialState);
         logger.info("Sending initial state {}", message);
         ctx.writeAndFlush(message);

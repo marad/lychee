@@ -5,11 +5,13 @@ import com.google.common.base.Objects;
 import java.util.Arrays;
 
 public class StatePatchMessage implements Message {
-    private final long stateToPatchSeq;
+    private final long previousStateVersion;
+    private final long currentStateVersion;
     private final byte[] patch;
 
-    public StatePatchMessage(long stateToPatchSeq, byte[] patch) {
-        this.stateToPatchSeq = stateToPatchSeq;
+    public StatePatchMessage(long previousStateVersion, long currentStateVersion, byte[] patch) {
+        this.previousStateVersion = previousStateVersion;
+        this.currentStateVersion = currentStateVersion;
         this.patch = patch;
     }
 
@@ -18,8 +20,12 @@ public class StatePatchMessage implements Message {
         return MessageType.STATE_PATCH.code();
     }
 
-    public long getStateToPatchSeq() {
-        return stateToPatchSeq;
+    public long getPreviousStateVersion() {
+        return previousStateVersion;
+    }
+
+    public long getCurrentStateVersion() {
+        return currentStateVersion;
     }
 
     public byte[] getPatch() {
@@ -31,17 +37,19 @@ public class StatePatchMessage implements Message {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         StatePatchMessage that = (StatePatchMessage) o;
-        return Objects.equal(stateToPatchSeq, that.stateToPatchSeq) &&
-                Arrays.equals(patch, that.patch);
+        return Objects.equal(previousStateVersion, that.previousStateVersion) &&
+                Objects.equal(currentStateVersion, that.currentStateVersion) &&
+                Objects.equal(patch, that.patch);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(stateToPatchSeq, patch);
+        return Objects.hashCode(previousStateVersion, currentStateVersion, patch);
     }
 
     @Override
     public String toString() {
-        return String.format("StatePatch{stateToPatchSeq=%d, patch=%s}", stateToPatchSeq, Arrays.toString(patch));
+        return String.format("StatePatchMessage{previousStateVersion=%d, currentStateVersion=%d, patch=%s}",
+                previousStateVersion, currentStateVersion, Arrays.toString(patch));
     }
 }

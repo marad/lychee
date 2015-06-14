@@ -2,4 +2,6 @@ dependencies {
     compile project(':api')
     compile project(':common')
     compile 'com.google.inject:guice:4.0'
+
+    testCompile 'org.scalamock:scalamock-scalatest-support_2.11:3.2.2'
 }

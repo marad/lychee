@@ -5,13 +5,13 @@ import com.google.inject.Singleton;
 import io.github.marad.lychee.api.State;
 
 @Singleton
-public class StateTracker {
+public class ClientStateTracker {
     private final StateChangeNotifier stateChangeNotifier;
     private long stateSeq;
     private State currentState;
 
     @Inject
-    public StateTracker(StateChangeNotifier stateChangeNotifier) {
+    public ClientStateTracker(StateChangeNotifier stateChangeNotifier) {
         this.stateChangeNotifier = stateChangeNotifier;
     }
 

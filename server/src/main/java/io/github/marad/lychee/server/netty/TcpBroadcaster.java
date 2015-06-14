@@ -9,7 +9,7 @@ import io.netty.channel.group.DefaultChannelGroup;
 import io.netty.util.concurrent.GlobalEventExecutor;
 
 @Singleton
-public class TcpBroadcaster implements Broadcaster {
+public class TcpBroadcaster implements MessageBroadcaster {
     private final ChannelGroup channelGroup = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
 
     public void addChannel(Channel channel) {

@@ -17,7 +17,7 @@ public class StatePatchEncoder implements MessageEncoder {
     public ByteBuf encode(Message message) {
         StatePatchMessage statePatchMessage = (StatePatchMessage) message;
         ByteBuf result = Unpooled.buffer(4 + statePatchMessage.getPatch().length);
-        result.writeInt((int) statePatchMessage.getStateToPatchSeq());
+        result.writeInt((int) statePatchMessage.getPreviousStateVersion());
         result.writeBytes(statePatchMessage.getPatch());
         return result;
     }

@@ -18,6 +18,6 @@ public class StatePatchDecoder implements MessageDecoder {
         int dataSize = frame.readableBytes();
         byte[] data = new byte [dataSize];
         frame.readBytes(data);
-        return new StatePatchMessage(stateSeq, data);
+        return new StatePatchMessage(stateSeq, currentStateVersion, data);
     }
 }

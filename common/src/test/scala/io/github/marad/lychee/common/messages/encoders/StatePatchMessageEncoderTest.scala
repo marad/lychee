@@ -11,7 +11,7 @@ class StatePatchMessageEncoderTest extends UnitTest {
     Given
     val encoder = new StatePatchEncoder
     val decoder = new StatePatchDecoder
-    val statePatch = new StatePatchMessage(100, Array(1.toByte, 2.toByte, 3.toByte))
+    val statePatch = new StatePatchMessage(100, currentStateVersion, Array(1.toByte, 2.toByte, 3.toByte))
 
     When
     val buffer = encoder.encode(statePatch)

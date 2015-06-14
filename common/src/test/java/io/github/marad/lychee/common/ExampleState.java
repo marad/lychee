@@ -1,10 +1,13 @@
-package io.github.marad.lychee.client.state;
+package io.github.marad.lychee.common;
 
 import com.google.common.base.Objects;
 import io.github.marad.lychee.api.State;
 
 public class ExampleState implements State {
     private int value;
+
+    private ExampleState() {
+    }
 
     public ExampleState(int value) {
         this.value = value;

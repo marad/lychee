@@ -1,6 +1,7 @@
 package io.github.marad.lychee.server.netty;
 
 import io.github.marad.lychee.common.messages.Message;
+import io.github.marad.lychee.server.ClientTracker;
 import io.github.marad.lychee.server.LycheeServerConfig;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
@@ -25,7 +26,10 @@ public class TcpServer {
     private boolean serverStarted = false;
 
     @Inject
-    public TcpServer(ServerChannelInitializer initializer, LycheeServerConfig config, TcpBroadcaster broadcaster) {
+    public TcpServer(
+            ServerChannelInitializer initializer,
+            LycheeServerConfig config,
+            TcpBroadcaster broadcaster) {
         this.initializer = initializer;
         this.broadcaster = broadcaster;
         this.port = config.getTcpPort();

@@ -3,7 +3,7 @@ package io.github.marad.lychee.client;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import io.github.marad.lychee.api.State;
-import io.github.marad.lychee.client.state.StateTracker;
+import io.github.marad.lychee.client.state.ClientStateTracker;
 import io.github.marad.lychee.client.state.TcpClient;
 
 import java.util.concurrent.TimeUnit;
@@ -11,12 +11,12 @@ import java.util.concurrent.TimeUnit;
 @Singleton
 public class LycheeClient {
     private final TcpClient client;
-    private final StateTracker stateTracker;
+    private final ClientStateTracker clientStateTracker;
 
     @Inject
-    public LycheeClient(TcpClient tcpClient, StateTracker stateTracker) {
+    public LycheeClient(TcpClient tcpClient, ClientStateTracker clientStateTracker) {
         client = tcpClient;
-        this.stateTracker = stateTracker;
+        this.clientStateTracker = clientStateTracker;
     }
 
     public void connect() {
@@ -40,6 +40,6 @@ public class LycheeClient {
     }
 
     public State getState() {
-        return stateTracker.getCurrentState();
+        return clientStateTracker.getCurrentState();
     }
 }

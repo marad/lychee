@@ -1,7 +1,7 @@
 package io.github.marad.lychee.client
 
 import com.google.inject.Guice
-import io.github.marad.lychee.client.state.ExampleState
+import io.github.marad.lychee.common.{ExampleState, UnitTest}
 
 class ClientModuleTest extends UnitTest {
   it should "start the module" in {

@@ -17,7 +17,7 @@ class StatePatchMessageDecoderTest extends UnitTest {
     val message = (new StatePatchDecoder).decode(packet).asInstanceOf[StatePatchMessage]
 
     Then
-    message.getStateToPatchSeq shouldBe stateSeq
+    message.getPreviousStateVersion shouldBe stateSeq
     message.getPatch shouldBe patch
   }
 

@@ -3,7 +3,7 @@ package io.github.marad.lychee.client.netty;
 import com.google.inject.Inject;
 import io.github.marad.lychee.api.State;
 import io.github.marad.lychee.client.state.StatePatchApplier;
-import io.github.marad.lychee.client.state.StateTracker;
+import io.github.marad.lychee.client.state.ClientStateTracker;
 import io.github.marad.lychee.common.messages.*;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
@@ -15,12 +15,12 @@ import javax.inject.Singleton;
 @Singleton
 public class ClientMessageHandler extends ChannelInboundHandlerAdapter {
 
-    private final StateTracker stateTracker;
+    private final ClientStateTracker clientStateTracker;
     private final StatePatchApplier patchApplier;
 
     @Inject
-    public ClientMessageHandler(StateTracker stateTracker, StatePatchApplier patchApplier) {
-        this.stateTracker = stateTracker;
+    public ClientMessageHandler(ClientStateTracker clientStateTracker, StatePatchApplier patchApplier) {
+        this.clientStateTracker = clientStateTracker;
         this.patchApplier = patchApplier;
     }
 
@@ -29,14 +29,14 @@ public class ClientMessageHandler extends ChannelInboundHandlerAdapter {
         logger.info("Received {}", msg);
         if (msg instanceof InitialStateMessage) {
             InitialStateMessage initialStateMessage = (InitialStateMessage) msg;
-            stateTracker.update(0, initialStateMessage.getState());
+            clientStateTracker.update(0, initialStateMessage.getState());
             ctx.writeAndFlush(new ConfirmStateMessage(0));
         }
         else if (msg instanceof StatePatchMessage) {
             StatePatchMessage statePatchMessage = (StatePatchMessage) msg;
-            State newState = patchApplier.apply(stateTracker.getCurrentState(), statePatchMessage.getPatch());
-            stateTracker.update(statePatchMessage.getStateToPatchSeq(), newState);
-            ctx.writeAndFlush(new ConfirmStateMessage(statePatchMessage.getStateToPatchSeq()));
+            State newState = patchApplier.apply(clientStateTracker.getCurrentState(), statePatchMessage.getPatch());
+            clientStateTracker.update(statePatchMessage.getPreviousStateVersion(), newState);
+            ctx.writeAndFlush(new ConfirmStateMessage(statePatchMessage.getPreviousStateVersion()));
         }
         else {
             // TODO: support custom message handlers

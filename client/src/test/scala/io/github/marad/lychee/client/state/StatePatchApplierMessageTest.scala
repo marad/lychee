@@ -2,8 +2,7 @@ package io.github.marad.lychee.client.state
 
 import com.nothome.delta.Delta
 import io.github.marad.lychee.api.State
-import io.github.marad.lychee.client.UnitTest
-import io.github.marad.lychee.common.StateSerializer
+import io.github.marad.lychee.common.{UnitTest, ExampleState, StateSerializer}
 import io.github.marad.lychee.common.net.StateInfo
 
 class StatePatchApplierMessageTest extends UnitTest {

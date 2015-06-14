@@ -3,7 +3,7 @@ package lychee
 import com.google.inject.Guice
 import com.nothome.delta.Delta
 import io.github.marad.lychee.client.{LycheeClientModule, LycheeClientConfig, LycheeClient}
-import io.github.marad.lychee.common.StateSerializer
+import io.github.marad.lychee.common.{ExampleState, StateSerializer}
 import io.github.marad.lychee.common.messages.StatePatchMessage
 import io.github.marad.lychee.server.{LycheeServerModule, LycheeServerConfig, LycheeServer}
 
@@ -45,7 +45,7 @@ class BasicInteractionTest extends IntegrationTest {
 
     When
     val patch = calcDelta(initialState, new ExampleState(10))
-    val future = app.server.sendTCP(new StatePatchMessage(1, patch))
+    val future = app.server.sendTCP(new StatePatchMessage(1, currentStateVersion, patch))
     future.await(1000)
 
     Then
