@@ -1,7 +1,6 @@
 package io.github.marad.lychee.server.state.broadcast
 
 import io.github.marad.lychee.common.{ExampleState, StateSerializer, UnitTest}
-import StateVersionNotFound
 
 class StateHistoryTest extends UnitTest {
   it should "create binary snapshot from state" in {

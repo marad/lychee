@@ -1,7 +1,0 @@
-dependencies {
-    compile project(':api')
-    compile project(':common')
-    compile project(':client')
-    compile project(':server')
-    compile 'ch.qos.logback:logback-classic:1.1.3'
-}

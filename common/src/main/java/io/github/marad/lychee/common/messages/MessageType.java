@@ -3,16 +3,15 @@ package io.github.marad.lychee.common.messages;
 public enum MessageType {
     STATE(0),
     STATE_PATCH(1),
-    CONFIRM_STATE(2),
-    STRING(3);
+    CONFIRM_STATE(2);
 
-    private final short code;
+    private final int code;
 
     MessageType(int code) {
-        this.code = (short) code;
+        this.code =  code;
     }
 
-    public short code() {
+    public int code() {
         return code;
     }
 }

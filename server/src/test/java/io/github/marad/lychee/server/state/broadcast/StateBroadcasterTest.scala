@@ -3,7 +3,6 @@ package io.github.marad.lychee.server.state.broadcast
 import com.nothome.delta.Delta
 import io.github.marad.lychee.common.messages.StatePatchMessage
 import io.github.marad.lychee.common.{ExampleState, StateSerializer, UnitTest}
-import StateHistory
 import io.github.marad.lychee.server.{Client, ClientTracker}
 import org.mockito.Mockito._
 import org.scalatest.mock.MockitoSugar

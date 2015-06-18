@@ -1,5 +1,0 @@
-dependencies {
-    compile project(':api')
-    compile project(':common')
-    compile 'com.google.inject:guice:4.0'
-}

@@ -45,7 +45,7 @@ class BasicInteractionTest extends IntegrationTest {
 
     When
     val patch = calcDelta(initialState, new ExampleState(10))
-    val future = app.server.sendTCP(new StatePatchMessage(1, currentStateVersion, patch))
+    val future = app.server.sendTCP(new StatePatchMessage(1, 2, patch))
     future.await(1000)
 
     Then

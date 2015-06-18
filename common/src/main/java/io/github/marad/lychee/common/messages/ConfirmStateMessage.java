@@ -12,7 +12,7 @@ public class ConfirmStateMessage implements Message {
     }
 
     @Override
-    public short getType() {
+    public int getType() {
         return MessageType.CONFIRM_STATE.code();
     }
 
