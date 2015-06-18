@@ -27,6 +27,6 @@ public class LycheeServerModule extends AbstractModule {
         bind(StateUpdater.class);
         bind(TcpBroadcaster.class);
         bind(StateHistory.class);
-        bind(ServerStateTracker.class);
+        bind(ServerStateTracker.class).toInstance(new ServerStateTracker(config.getInitialState()));
     }
 }
