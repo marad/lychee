@@ -18,7 +18,7 @@ public class LycheeServerModule extends AbstractModule {
 
     @Override
     protected void configure() {
-        install(new LycheeModule(config.getInitialState().getClass()));
+        install(new LycheeModule());
         bind(ServerChannelInitializer.class);
         bind(LycheeServerConfig.class).toInstance(config);
         bind(ServerMessageHandler.class);

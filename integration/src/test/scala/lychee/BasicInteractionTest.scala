@@ -12,7 +12,7 @@ class BasicInteractionTest extends IntegrationTest {
 
   val initialState = new ExampleState(5)
   val serverConfig = new LycheeServerConfig(8080, initialState)
-  val clientConfig = new LycheeClientConfig("localhost", 8080, classOf[ExampleState])
+  val clientConfig = new LycheeClientConfig("localhost", 8080)
 
   def setupApp = new {
     val injector = Guice.createInjector(new LycheeServerModule(serverConfig), new LycheeClientModule(clientConfig))

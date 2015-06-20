@@ -20,8 +20,8 @@ public class OutboundMessageEncoder extends MessageToByteEncoder<Message> {
     protected void encode(ChannelHandlerContext ctx, Message msg, ByteBuf out) throws Exception {
         MessageEncoder encoder = encoders.findEncoder(msg.getType());
         ByteBuf encoded = encoder.encode(msg);
-        out.writeInt(2 + encoded.readableBytes());
-        out.writeShort(msg.getType());
+        out.writeInt(4 + encoded.readableBytes());
+        out.writeInt(msg.getType());
         out.writeBytes(encoded);
     }
 }

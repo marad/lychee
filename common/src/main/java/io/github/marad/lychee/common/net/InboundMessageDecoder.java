@@ -43,7 +43,7 @@ public class InboundMessageDecoder extends ReplayingDecoder<DecoderState> {
     }
 
     private Message decode(ByteBuf frame) {
-        int messageType = frame.readShort();
+        int messageType = frame.readInt();
         MessageDecoder decoder = decoders.findDecoder(messageType);
         return decoder.decode(frame);
     }

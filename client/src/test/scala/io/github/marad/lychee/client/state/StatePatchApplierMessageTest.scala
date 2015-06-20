@@ -18,7 +18,7 @@ class StatePatchApplierMessageTest extends UnitTest {
     val stateAfter = new ExampleState(7)
     val patch = delta.compute(stateBefore.serialized, stateAfter.serialized)
 
-    val applier = new StatePatchApplier(new StateInfo(classOf[ExampleState]))
+    val applier = new StatePatchApplier
 
     When
     def result = applier.apply(new ExampleState(5), patch)

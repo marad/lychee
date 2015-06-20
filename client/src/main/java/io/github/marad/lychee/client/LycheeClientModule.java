@@ -17,7 +17,7 @@ public class LycheeClientModule extends AbstractModule {
 
     @Override
     protected void configure() {
-        install(new LycheeModule(lycheeClientConfig.getStateType()));
+        install(new LycheeModule());
         bind(ClientChannelInitializer.class);
         bind(ClientMessageHandler.class);
         bind(TcpClient.class);

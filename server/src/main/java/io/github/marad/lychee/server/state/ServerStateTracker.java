@@ -1,8 +1,10 @@
 package io.github.marad.lychee.server.state;
 
 import com.google.common.base.Objects;
+import com.google.inject.Singleton;
 import io.github.marad.lychee.api.State;
 
+@Singleton
 public class ServerStateTracker {
     private State currentState;
 
