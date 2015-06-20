@@ -5,7 +5,7 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.nothome.delta.Delta;
 import io.github.marad.lychee.api.State;
-import io.github.marad.lychee.common.messages.StatePatchMessage;
+import io.github.marad.lychee.common.sync.messages.StatePatchMessage;
 import io.github.marad.lychee.server.Client;
 import io.github.marad.lychee.server.ClientTracker;
 import org.slf4j.Logger;

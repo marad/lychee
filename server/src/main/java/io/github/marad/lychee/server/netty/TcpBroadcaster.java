@@ -1,7 +1,7 @@
 package io.github.marad.lychee.server.netty;
 
 import com.google.inject.Singleton;
-import io.github.marad.lychee.common.messages.Message;
+import io.github.marad.lychee.common.Message;
 import io.netty.channel.Channel;
 import io.netty.channel.group.ChannelGroup;
 import io.netty.channel.group.ChannelGroupFuture;

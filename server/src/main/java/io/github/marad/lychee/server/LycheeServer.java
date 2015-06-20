@@ -2,7 +2,7 @@ package io.github.marad.lychee.server;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import io.github.marad.lychee.common.messages.Message;
+import io.github.marad.lychee.common.Message;
 import io.github.marad.lychee.server.netty.TcpServer;
 import io.github.marad.lychee.server.state.ServerStateTracker;
 import io.netty.channel.group.ChannelGroupFuture;

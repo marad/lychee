@@ -2,10 +2,11 @@ package lychee
 
 import com.google.inject.Guice
 import com.nothome.delta.Delta
-import io.github.marad.lychee.client.{LycheeClientModule, LycheeClientConfig, LycheeClient}
+import io.github.marad.lychee.client.sync.state.ClientStateTracker
+import io.github.marad.lychee.client.{LycheeClient, LycheeClientConfig, LycheeClientModule}
+import io.github.marad.lychee.common.sync.messages.StatePatchMessage
 import io.github.marad.lychee.common.{ExampleState, StateSerializer}
-import io.github.marad.lychee.common.messages.StatePatchMessage
-import io.github.marad.lychee.server.{LycheeServerModule, LycheeServerConfig, LycheeServer}
+import io.github.marad.lychee.server.{LycheeServer, LycheeServerConfig, LycheeServerModule}
 
 class BasicInteractionTest extends IntegrationTest {
   import BasicInteractionTest._
@@ -18,6 +19,7 @@ class BasicInteractionTest extends IntegrationTest {
     val injector = Guice.createInjector(new LycheeServerModule(serverConfig), new LycheeClientModule(clientConfig))
     val server = injector.getInstance(classOf[LycheeServer])
     val client = injector.getInstance(classOf[LycheeClient])
+    val clientStateTracker = injector.getInstance(classOf[ClientStateTracker])
     server.start()
     client.connect()
     
@@ -36,7 +38,7 @@ class BasicInteractionTest extends IntegrationTest {
 
     Then
     app.closeAndWait
-    app.client.getState shouldBe initialState
+    app.clientStateTracker.getCurrentState shouldBe initialState
   }
 
   "Client" should "handle state patch message broadcasted by server" in {
@@ -50,7 +52,7 @@ class BasicInteractionTest extends IntegrationTest {
 
     Then
     app.closeAndWait
-    app.client.getState shouldBe new ExampleState(10)
+    app.clientStateTracker.getCurrentState shouldBe new ExampleState(10)
   }
 
 }

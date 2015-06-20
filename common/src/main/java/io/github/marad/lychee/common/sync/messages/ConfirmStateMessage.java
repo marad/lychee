@@ -1,4 +1,6 @@
-package io.github.marad.lychee.common.messages;
+package io.github.marad.lychee.common.sync.messages;
+
+import io.github.marad.lychee.common.Message;
 
 public class ConfirmStateMessage implements Message {
     private final long stateSeq;

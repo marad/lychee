@@ -1,6 +1,6 @@
 package io.github.marad.lychee.server;
 
-import io.github.marad.lychee.common.messages.Message;
+import io.github.marad.lychee.common.Message;
 import io.netty.channel.Channel;
 
 public class Client {

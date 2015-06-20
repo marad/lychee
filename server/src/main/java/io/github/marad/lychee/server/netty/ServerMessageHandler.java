@@ -1,10 +1,13 @@
 package io.github.marad.lychee.server.netty;
 
 import io.github.marad.lychee.api.State;
-import io.github.marad.lychee.common.messages.InitialStateMessage;
+import io.github.marad.lychee.common.handlers.MessageRouter;
+import io.github.marad.lychee.common.sync.messages.InitialStateMessage;
+import io.github.marad.lychee.common.Message;
 import io.github.marad.lychee.server.Client;
 import io.github.marad.lychee.server.ClientTracker;
 import io.github.marad.lychee.server.LycheeServerConfig;
+import io.github.marad.lychee.server.annotations.Server;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import org.slf4j.Logger;
@@ -17,6 +20,7 @@ import javax.inject.Singleton;
 @Singleton
 @Named("ServerMessageHandler")
 public class ServerMessageHandler extends ChannelInboundHandlerAdapter {
+    private final MessageRouter messageRouter;
     private final TcpBroadcaster broadcaster;
     private final ClientTracker clientTracker;
     private State initialState;
@@ -24,8 +28,10 @@ public class ServerMessageHandler extends ChannelInboundHandlerAdapter {
     @Inject
     public ServerMessageHandler(
             LycheeServerConfig lycheeServerConfig,
+            @Server MessageRouter messageRouter,
             TcpBroadcaster broadcaster,
             ClientTracker clientTracker) {
+        this.messageRouter = messageRouter;
         this.broadcaster = broadcaster;
         this.clientTracker = clientTracker;
         this.initialState = lycheeServerConfig.getInitialState();
@@ -43,7 +49,7 @@ public class ServerMessageHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         logger.info("Received {}", msg);
-//        ctx.writeAndFlush(msg);
+        messageRouter.route(ctx, (Message)msg);
     }
 
     @Override

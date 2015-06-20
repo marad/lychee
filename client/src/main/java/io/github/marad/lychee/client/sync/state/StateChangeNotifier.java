@@ -1,4 +1,4 @@
-package io.github.marad.lychee.client.state;
+package io.github.marad.lychee.client.sync.state;
 
 import com.google.common.collect.Lists;
 import com.google.inject.Singleton;

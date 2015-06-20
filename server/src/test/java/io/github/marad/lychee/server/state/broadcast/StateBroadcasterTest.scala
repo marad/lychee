@@ -1,7 +1,7 @@
 package io.github.marad.lychee.server.state.broadcast
 
 import com.nothome.delta.Delta
-import io.github.marad.lychee.common.messages.StatePatchMessage
+import io.github.marad.lychee.common.sync.messages.StatePatchMessage
 import io.github.marad.lychee.common.{ExampleState, StateSerializer, UnitTest}
 import io.github.marad.lychee.server.{Client, ClientTracker}
 import org.mockito.Mockito._

@@ -1,6 +1,7 @@
-package io.github.marad.lychee.common.messages;
+package io.github.marad.lychee.common.sync.messages;
 
 import com.google.common.base.Objects;
+import io.github.marad.lychee.common.Message;
 
 import java.util.Arrays;
 

@@ -1,7 +1,6 @@
 package io.github.marad.lychee.server.netty;
 
-import io.github.marad.lychee.common.messages.Message;
-import io.github.marad.lychee.server.ClientTracker;
+import io.github.marad.lychee.common.Message;
 import io.github.marad.lychee.server.LycheeServerConfig;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;

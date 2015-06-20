@@ -1,4 +1,4 @@
-package io.github.marad.lychee.client.state;
+package io.github.marad.lychee.client.sync.state;
 
 import com.nothome.delta.GDiffPatcher;
 import io.github.marad.lychee.api.State;

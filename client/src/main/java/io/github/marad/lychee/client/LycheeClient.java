@@ -2,21 +2,17 @@ package io.github.marad.lychee.client;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import io.github.marad.lychee.api.State;
-import io.github.marad.lychee.client.state.ClientStateTracker;
-import io.github.marad.lychee.client.state.TcpClient;
+import io.github.marad.lychee.client.netty.TcpClient;
 
 import java.util.concurrent.TimeUnit;
 
 @Singleton
 public class LycheeClient {
     private final TcpClient client;
-    private final ClientStateTracker clientStateTracker;
 
     @Inject
-    public LycheeClient(TcpClient tcpClient, ClientStateTracker clientStateTracker) {
+    public LycheeClient(TcpClient tcpClient) {
         client = tcpClient;
-        this.clientStateTracker = clientStateTracker;
     }
 
     public void connect() {
@@ -37,9 +33,5 @@ public class LycheeClient {
 
     public void await(long timeout, TimeUnit timeUnit) throws InterruptedException {
         client.await(timeout, timeUnit);
-    }
-
-    public State getState() {
-        return clientStateTracker.getCurrentState();
     }
 }

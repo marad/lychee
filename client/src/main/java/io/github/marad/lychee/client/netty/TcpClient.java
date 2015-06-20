@@ -1,4 +1,4 @@
-package io.github.marad.lychee.client.state;
+package io.github.marad.lychee.client.netty;
 
 import com.google.inject.Inject;
 import io.github.marad.lychee.client.ClientNotConnected;

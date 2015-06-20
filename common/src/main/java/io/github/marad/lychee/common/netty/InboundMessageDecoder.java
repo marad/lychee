@@ -2,7 +2,7 @@ package io.github.marad.lychee.common.netty;
 
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.io.Input;
-import io.github.marad.lychee.common.messages.Message;
+import io.github.marad.lychee.common.Message;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ReplayingDecoder;
