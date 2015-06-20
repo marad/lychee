@@ -14,17 +14,21 @@ public class OutboundMessageEncoder extends MessageToByteEncoder<Message> {
     @Override
     protected void encode(ChannelHandlerContext ctx, Message msg, ByteBuf out) throws Exception {
         try {
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            Kryo kryo = new Kryo();
-            Output output = new Output(baos);
-            kryo.writeClassAndObject(output, msg);
-            output.close();
-            baos.close();
-            byte[] data = baos.toByteArray();
+            byte[] data = encode(msg);
             out.writeInt(data.length);
             out.writeBytes(data);
         } catch (IOException ex){
             throw new RuntimeException(ex);
         }
+    }
+
+    private byte[] encode(Message msg) throws IOException {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        Kryo kryo = new Kryo();
+        Output output = new Output(baos);
+        kryo.writeClassAndObject(output, msg);
+        output.close();
+        baos.close();
+        return baos.toByteArray();
     }
 }
