@@ -9,15 +9,16 @@ public class StatePatchMessage implements Message {
     private final long currentStateVersion;
     private final byte[] patch;
 
+    private StatePatchMessage() {
+        previousStateVersion = 0;
+        currentStateVersion = 0;
+        patch = null;
+    }
+
     public StatePatchMessage(long previousStateVersion, long currentStateVersion, byte[] patch) {
         this.previousStateVersion = previousStateVersion;
         this.currentStateVersion = currentStateVersion;
         this.patch = patch;
-    }
-
-    @Override
-    public int getType() {
-        return MessageType.STATE_PATCH.code();
     }
 
     public long getPreviousStateVersion() {

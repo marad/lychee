@@ -6,13 +6,12 @@ import io.github.marad.lychee.api.State;
 public class InitialStateMessage implements Message {
     private final State state;
 
-    public InitialStateMessage(State state) {
-        this.state = state;
+    private InitialStateMessage() {
+        state = null;
     }
 
-    @Override
-    public int getType() {
-        return MessageType.STATE.code();
+    public InitialStateMessage(State state) {
+        this.state = state;
     }
 
     public State getState() {

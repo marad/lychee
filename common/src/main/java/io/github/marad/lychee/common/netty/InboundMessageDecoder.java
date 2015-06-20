@@ -1,26 +1,24 @@
-package io.github.marad.lychee.common.net;
+package io.github.marad.lychee.common.netty;
 
-import com.google.inject.Inject;
+import com.esotericsoftware.kryo.Kryo;
+import com.esotericsoftware.kryo.io.Input;
 import io.github.marad.lychee.common.messages.Message;
-import io.github.marad.lychee.common.net.decoders.MessageDecoder;
-import io.github.marad.lychee.common.net.decoders.Decoders;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ReplayingDecoder;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.util.List;
 
-import static io.github.marad.lychee.common.net.DecoderState.READ_CONTENT;
-import static io.github.marad.lychee.common.net.DecoderState.READ_SIZE;
+import static io.github.marad.lychee.common.netty.DecoderState.READ_CONTENT;
+import static io.github.marad.lychee.common.netty.DecoderState.READ_SIZE;
 
 public class InboundMessageDecoder extends ReplayingDecoder<DecoderState> {
-    private final Decoders decoders;
     private int size;
 
-    @Inject
-    public InboundMessageDecoder(Decoders decoders) {
+    public InboundMessageDecoder() {
         super(READ_SIZE);
-        this.decoders = decoders;
     }
 
     @Override
@@ -43,8 +41,16 @@ public class InboundMessageDecoder extends ReplayingDecoder<DecoderState> {
     }
 
     private Message decode(ByteBuf frame) {
-        int messageType = frame.readInt();
-        MessageDecoder decoder = decoders.findDecoder(messageType);
-        return decoder.decode(frame);
+        try {
+            Kryo kryo = new Kryo();
+            ByteArrayInputStream bais = new ByteArrayInputStream(frame.array());
+            Input input = new Input(bais);
+            Message state = (Message) kryo.readClassAndObject(input);
+            input.close();
+            bais.close();
+            return state;
+        } catch (IOException ex) {
+            throw new RuntimeException(ex);
+        }
     }
 }

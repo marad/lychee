@@ -1,8 +1,8 @@
 package io.github.marad.lychee.server.netty;
 
 import com.google.inject.Inject;
-import io.github.marad.lychee.common.net.InboundMessageDecoder;
-import io.github.marad.lychee.common.net.OutboundMessageEncoder;
+import io.github.marad.lychee.common.netty.InboundMessageDecoder;
+import io.github.marad.lychee.common.netty.OutboundMessageEncoder;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.socket.SocketChannel;

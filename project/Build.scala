@@ -14,7 +14,7 @@ object LycheeBuild extends Build {
     .settings(baseSettings:_*)
 
   lazy val common = project
-    .dependsOn(api)
+    .dependsOn(api % "compile->compile;test->test")
     .settings(baseSettings:_*)
 
   lazy val client = project
