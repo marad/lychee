@@ -1,30 +1,42 @@
-package io.github.marad.lychee.server.state.broadcast;
+package io.github.marad.lychee.server.sync.state.broadcast;
 
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.nothome.delta.Delta;
 import io.github.marad.lychee.api.State;
+import io.github.marad.lychee.common.sync.StateChangeListener;
+import io.github.marad.lychee.common.sync.StateChangeNotifier;
 import io.github.marad.lychee.common.sync.messages.StatePatchMessage;
-import io.github.marad.lychee.server.Client;
-import io.github.marad.lychee.server.ClientTracker;
+import io.github.marad.lychee.server.annotations.Server;
+import io.github.marad.lychee.server.sync.clients.Client;
+import io.github.marad.lychee.server.sync.clients.ClientTracker;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
 @Singleton
-public class StateBroadcaster {
+public class StateBroadcaster implements StateChangeListener {
     private final StateHistory stateHistory;
     private final ClientTracker clientTracker;
 
     @Inject
-    public StateBroadcaster(StateHistory stateHistory, ClientTracker clientTracker) {
+    public StateBroadcaster(
+            @Server StateChangeNotifier stateChangeNotifier,
+            StateHistory stateHistory,
+            ClientTracker clientTracker) {
         this.stateHistory = stateHistory;
         this.clientTracker = clientTracker;
+        stateChangeNotifier.addListener(this);
     }
 
-    public void broadcast(State state) {
+    @Override
+    public void stateUpdated(State previousState, State currentState) {
+        broadcast(currentState);
+    }
+
+    private void broadcast(State state) {
         Delta delta = new Delta();
         StateSnapshot currentState = stateHistory.createSnapshot(state);
 

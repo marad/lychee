@@ -1,11 +1,10 @@
 package lychee
 
 import com.google.inject.Guice
-import com.nothome.delta.Delta
 import io.github.marad.lychee.client.sync.state.ClientStateTracker
 import io.github.marad.lychee.client.{LycheeClient, LycheeClientConfig, LycheeClientModule}
-import io.github.marad.lychee.common.sync.messages.StatePatchMessage
-import io.github.marad.lychee.common.{ExampleState, StateSerializer}
+import io.github.marad.lychee.common.ExampleState
+import io.github.marad.lychee.server.sync.state.ServerStateTracker
 import io.github.marad.lychee.server.{LycheeServer, LycheeServerConfig, LycheeServerModule}
 
 class BasicInteractionTest extends IntegrationTest {
@@ -20,6 +19,7 @@ class BasicInteractionTest extends IntegrationTest {
     val server = injector.getInstance(classOf[LycheeServer])
     val client = injector.getInstance(classOf[LycheeClient])
     val clientStateTracker = injector.getInstance(classOf[ClientStateTracker])
+    val serverStateTracker = injector.getInstance(classOf[ServerStateTracker])
     server.start()
     client.connect()
     
@@ -38,23 +38,22 @@ class BasicInteractionTest extends IntegrationTest {
 
     Then
     app.closeAndWait
-    app.clientStateTracker.getCurrentState shouldBe initialState
+    app.clientStateTracker.getState shouldBe initialState
   }
 
-  "Client" should "handle state patch message broadcasted by server" in {
+  it should "broadcast state updates on server and handle changes on client" in {
     Given
     val app = setupApp
 
     When
-    val patch = calcDelta(initialState, new ExampleState(10))
-    val future = app.server.sendTCP(new StatePatchMessage(1, 2, patch))
-    future.await(1000)
+    Thread.sleep(100)
+    app.serverStateTracker.update(new ExampleState(20))
+    Thread.sleep(100)
 
     Then
     app.closeAndWait
-    app.clientStateTracker.getCurrentState shouldBe new ExampleState(10)
+    app.clientStateTracker.getState shouldBe new ExampleState(20)
   }
-
 }
 
 object BasicInteractionTest {
@@ -63,12 +62,5 @@ object BasicInteractionTest {
       closable.close()
       closable.await(millis)
     }
-  }
-
-  def calcDelta(previous: ExampleState, current: ExampleState) = {
-    val previousData = StateSerializer.serialize(previous)
-    val currentData = StateSerializer.serialize(current)
-    val delta = new Delta
-    delta.compute(previousData, currentData)
   }
 }

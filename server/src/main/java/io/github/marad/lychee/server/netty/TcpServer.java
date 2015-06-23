@@ -1,10 +1,8 @@
 package io.github.marad.lychee.server.netty;
 
-import io.github.marad.lychee.common.Message;
 import io.github.marad.lychee.server.LycheeServerConfig;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
-import io.netty.channel.group.ChannelGroupFuture;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
@@ -16,7 +14,6 @@ import java.util.concurrent.TimeUnit;
 @Singleton
 public class TcpServer {
     private final ChannelInitializer<SocketChannel> initializer;
-    private final TcpBroadcaster broadcaster;
     private final int port;
 
     private EventLoopGroup bossGroup;
@@ -27,10 +24,8 @@ public class TcpServer {
     @Inject
     public TcpServer(
             ServerChannelInitializer initializer,
-            LycheeServerConfig config,
-            TcpBroadcaster broadcaster) {
+            LycheeServerConfig config) {
         this.initializer = initializer;
-        this.broadcaster = broadcaster;
         this.port = config.getTcpPort();
     }
 
@@ -42,10 +37,6 @@ public class TcpServer {
         channel = tcpServerSetup.bind(port)
                 .sync().channel();
         serverStarted = true;
-    }
-
-    public ChannelGroupFuture send(Message message) {
-        return broadcaster.broadcast(message);
     }
 
     public ChannelFuture close() {

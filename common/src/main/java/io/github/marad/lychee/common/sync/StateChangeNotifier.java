@@ -1,12 +1,10 @@
-package io.github.marad.lychee.client.sync.state;
+package io.github.marad.lychee.common.sync;
 
 import com.google.common.collect.Lists;
-import com.google.inject.Singleton;
 import io.github.marad.lychee.api.State;
 
 import java.util.List;
 
-@Singleton
 public class StateChangeNotifier {
     private List<StateChangeListener> listeners = Lists.newLinkedList();
 

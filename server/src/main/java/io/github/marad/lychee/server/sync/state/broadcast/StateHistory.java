@@ -1,15 +1,21 @@
-package io.github.marad.lychee.server.state.broadcast;
+package io.github.marad.lychee.server.sync.state.broadcast;
 
 import com.google.common.base.Preconditions;
+import com.google.inject.Singleton;
 import io.github.marad.lychee.api.State;
 import io.github.marad.lychee.common.StateSerializer;
 
 import java.util.HashMap;
 import java.util.Map;
 
+@Singleton
 public class StateHistory {
-    private long nextVersion = 1;
+    private long nextVersion = 0;
     private final Map<Long, StateSnapshot> versionMap = new HashMap<Long, StateSnapshot>();
+
+    public StateHistory(State initialState) {
+        createSnapshot(initialState);
+    }
 
     public StateSnapshot createSnapshot(State state) {
         Preconditions.checkNotNull(state);

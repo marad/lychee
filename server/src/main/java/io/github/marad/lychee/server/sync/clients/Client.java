@@ -1,4 +1,4 @@
-package io.github.marad.lychee.server;
+package io.github.marad.lychee.server.sync.clients;
 
 import io.github.marad.lychee.common.Message;
 import io.netty.channel.Channel;
@@ -9,7 +9,7 @@ public class Client {
 
     public Client(Channel tcpChannel) {
         this.tcpChannel = tcpChannel;
-        stateVersion = 1;
+        stateVersion = 0;
     }
 
     public Channel getTcpChannel() {

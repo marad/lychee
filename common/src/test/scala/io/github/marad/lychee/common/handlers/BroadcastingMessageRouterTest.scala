@@ -20,7 +20,7 @@ class BroadcastingMessageRouterTest extends UnitTest {
     when(messageHandlersMock.toList) thenReturn List(firstHandlerStub, secondHandlerStub)
 
     When
-    router.route(null, testMessage)
+    router.routeMessage(null, testMessage)
 
     Then
     verify(firstHandlerStub).handleMessage(null, testMessage)

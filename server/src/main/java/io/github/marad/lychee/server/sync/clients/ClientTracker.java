@@ -1,11 +1,13 @@
-package io.github.marad.lychee.server;
+package io.github.marad.lychee.server.sync.clients;
 
+import com.google.inject.Singleton;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
 
 import java.util.HashSet;
 import java.util.Set;
 
+@Singleton
 public class ClientTracker {
     private final Set<Client> clients = new HashSet<Client>();
 

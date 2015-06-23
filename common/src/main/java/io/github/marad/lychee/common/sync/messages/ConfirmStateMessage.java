@@ -3,22 +3,22 @@ package io.github.marad.lychee.common.sync.messages;
 import io.github.marad.lychee.common.Message;
 
 public class ConfirmStateMessage implements Message {
-    private final long stateSeq;
+    private final long stateVersion;
 
-    private  ConfirmStateMessage() {
-        stateSeq = 0;
+    private ConfirmStateMessage() {
+        stateVersion = 0;
     }
 
-    public ConfirmStateMessage(long stateSeq) {
-        this.stateSeq = stateSeq;
+    public ConfirmStateMessage(long stateVersion) {
+        this.stateVersion = stateVersion;
     }
 
-    public long getStateSeq() {
-        return stateSeq;
+    public long getStateVersion() {
+        return stateVersion;
     }
 
     @Override
     public String toString() {
-        return String.format("ConfirmStateMessage{stateSeq=%d}", stateSeq);
+        return String.format("ConfirmStateMessage{stateVersion=%d}", stateVersion);
     }
 }

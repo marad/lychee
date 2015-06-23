@@ -4,5 +4,7 @@ import io.github.marad.lychee.common.Message;
 import io.netty.channel.ChannelHandlerContext;
 
 public interface MessageRouter {
-    void route(ChannelHandlerContext ctx, Message message);
+    void routeConnected(ChannelHandlerContext ctx);
+    void routeDisconnected(ChannelHandlerContext ctx);
+    void routeMessage(ChannelHandlerContext ctx, Message message);
 }

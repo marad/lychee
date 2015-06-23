@@ -1,6 +1,7 @@
 package io.github.marad.lychee.server
 
 import io.github.marad.lychee.common.UnitTest
+import io.github.marad.lychee.server.sync.clients.{Client, ClientTracker}
 import io.netty.channel.embedded.EmbeddedChannel
 import io.netty.channel.{ChannelHandlerContext, ChannelHandler, Channel}
 import org.scalatest.mock.MockitoSugar

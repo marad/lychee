@@ -12,7 +12,22 @@ public class BroadcastingMessageRouter implements MessageRouter {
         this.messageHandlers = messageHandlers;
     }
 
-    public void route(ChannelHandlerContext ctx, Message message) {
+    @Override
+    public void routeConnected(ChannelHandlerContext ctx) {
+        for(MessageHandler handler : messageHandlers.toList()) {
+            handler.handleConnected(ctx);
+        }
+    }
+
+    @Override
+    public void routeDisconnected(ChannelHandlerContext ctx) {
+        for(MessageHandler handler : messageHandlers.toList()) {
+            handler.handleDisconnected(ctx);
+        }
+    }
+
+    @Override
+    public void routeMessage(ChannelHandlerContext ctx, Message message) {
         for(MessageHandler handler : messageHandlers.toList()) {
             handler.handleMessage(ctx, message);
         }

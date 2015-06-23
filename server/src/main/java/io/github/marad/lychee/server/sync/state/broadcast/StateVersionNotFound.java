@@ -1,4 +1,4 @@
-package io.github.marad.lychee.server.state.broadcast;
+package io.github.marad.lychee.server.sync.state.broadcast;
 
 public class StateVersionNotFound extends RuntimeException {
     public StateVersionNotFound(long version) {

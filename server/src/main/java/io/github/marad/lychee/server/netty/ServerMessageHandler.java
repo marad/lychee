@@ -4,8 +4,8 @@ import io.github.marad.lychee.api.State;
 import io.github.marad.lychee.common.handlers.MessageRouter;
 import io.github.marad.lychee.common.sync.messages.InitialStateMessage;
 import io.github.marad.lychee.common.Message;
-import io.github.marad.lychee.server.Client;
-import io.github.marad.lychee.server.ClientTracker;
+import io.github.marad.lychee.server.sync.clients.Client;
+import io.github.marad.lychee.server.sync.clients.ClientTracker;
 import io.github.marad.lychee.server.LycheeServerConfig;
 import io.github.marad.lychee.server.annotations.Server;
 import io.netty.channel.ChannelHandlerContext;
@@ -21,7 +21,6 @@ import javax.inject.Singleton;
 @Named("ServerMessageHandler")
 public class ServerMessageHandler extends ChannelInboundHandlerAdapter {
     private final MessageRouter messageRouter;
-    private final TcpBroadcaster broadcaster;
     private final ClientTracker clientTracker;
     private State initialState;
 
@@ -29,27 +28,26 @@ public class ServerMessageHandler extends ChannelInboundHandlerAdapter {
     public ServerMessageHandler(
             LycheeServerConfig lycheeServerConfig,
             @Server MessageRouter messageRouter,
-            TcpBroadcaster broadcaster,
             ClientTracker clientTracker) {
         this.messageRouter = messageRouter;
-        this.broadcaster = broadcaster;
         this.clientTracker = clientTracker;
         this.initialState = lycheeServerConfig.getInitialState();
     }
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        broadcaster.addChannel(ctx.channel());
-        clientTracker.add(new Client(ctx.channel()));
-        InitialStateMessage message = new InitialStateMessage(initialState);
-        logger.info("Sending initial state {}", message);
-        ctx.writeAndFlush(message);
+        messageRouter.routeConnected(ctx);
+//        broadcaster.addChannel(ctx.channel());
+//        clientTracker.add(new Client(ctx.channel()));
+//        InitialStateMessage message = new InitialStateMessage(initialState);
+//        logger.info("Sending initial state {}", message);
+//        ctx.writeAndFlush(message);
     }
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         logger.info("Received {}", msg);
-        messageRouter.route(ctx, (Message)msg);
+        messageRouter.routeMessage(ctx, (Message) msg);
     }
 
     @Override

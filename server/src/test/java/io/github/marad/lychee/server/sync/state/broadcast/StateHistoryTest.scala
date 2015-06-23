@@ -1,28 +1,26 @@
-package io.github.marad.lychee.server.state.broadcast
+package io.github.marad.lychee.server.sync.state.broadcast
 
 import io.github.marad.lychee.common.{ExampleState, StateSerializer, UnitTest}
 
 class StateHistoryTest extends UnitTest {
   it should "create binary snapshot from state" in {
     Given
-    val stateHistory = new StateHistory
     val s1 = new ExampleState(1)
     val s2 = new ExampleState(2)
+    val stateHistory = new StateHistory(s1)
 
     When
-    val v1 = stateHistory.createSnapshot(s1).getVersion
     val v2 = stateHistory.createSnapshot(s2).getVersion
 
     Then
-    v1 shouldBe 1
-    v2 shouldBe 2
-    stateHistory.getSnapshot(v1).getData shouldBe StateSerializer.serialize(s1)
+    v2 shouldBe 1
+    stateHistory.getSnapshot(0).getData shouldBe StateSerializer.serialize(s1)
     stateHistory.getSnapshot(v2).getData shouldBe StateSerializer.serialize(s2)
   }
 
   it should "fail when creating snapshot from null" in {
     Given
-    val stateHistory = new StateHistory
+    val stateHistory = new StateHistory(new ExampleState(1))
 
     Expect
     intercept[NullPointerException] {
@@ -32,7 +30,7 @@ class StateHistoryTest extends UnitTest {
 
   it should "fail when asked for not existing version" in {
     Given
-    val stateHistory = new StateHistory
+    val stateHistory = new StateHistory(new ExampleState(1))
 
     Expect
     intercept[StateVersionNotFound] {
@@ -42,8 +40,8 @@ class StateHistoryTest extends UnitTest {
 
   it should "remove given version" in {
     Given
-    val stateHistory = new StateHistory
     val s1 = new ExampleState(1)
+    val stateHistory = new StateHistory(s1)
     val v1 = stateHistory.createSnapshot(s1).getVersion
 
     When
@@ -57,9 +55,9 @@ class StateHistoryTest extends UnitTest {
 
   it should "not fail when trying to remove not existing version" in {
     Given
-    val stateHistory = new StateHistory
+    val stateHistory = new StateHistory(new ExampleState(1))
 
     When
-    stateHistory.removeSnapshot(1)
+    stateHistory.removeSnapshot(100)
   }
 }

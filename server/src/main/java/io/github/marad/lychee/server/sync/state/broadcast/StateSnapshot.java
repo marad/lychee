@@ -1,4 +1,4 @@
-package io.github.marad.lychee.server.state.broadcast;
+package io.github.marad.lychee.server.sync.state.broadcast;
 
 import com.google.common.base.Objects;
 
