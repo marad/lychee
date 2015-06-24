@@ -4,7 +4,9 @@ import com.google.inject.Guice
 import io.github.marad.lychee.client.sync.state.ClientStateTracker
 import io.github.marad.lychee.client.{LycheeClient, LycheeClientConfig, LycheeClientModule}
 import io.github.marad.lychee.common.ExampleState
+import io.github.marad.lychee.server.sync.clients.ClientTracker
 import io.github.marad.lychee.server.sync.state.ServerStateTracker
+import io.github.marad.lychee.server.sync.state.broadcast.StateHistory
 import io.github.marad.lychee.server.{LycheeServer, LycheeServerConfig, LycheeServerModule}
 
 class BasicInteractionTest extends IntegrationTest {
@@ -37,22 +39,26 @@ class BasicInteractionTest extends IntegrationTest {
     Thread.sleep(100)
 
     Then
-    app.closeAndWait
     app.clientStateTracker.getState shouldBe initialState
+    app.closeAndWait
   }
 
   it should "broadcast state updates on server and handle changes on client" in {
     Given
     val app = setupApp
+    val clientTracker = app.injector.getInstance(classOf[ClientTracker])
 
     When
     Thread.sleep(100)
     app.serverStateTracker.update(new ExampleState(20))
     Thread.sleep(100)
+    app.serverStateTracker.update(new ExampleState(30))
+    Thread.sleep(100)
 
     Then
+    clientTracker.getClients.iterator.next.getStateVersion shouldBe 2
+    app.clientStateTracker.getState shouldBe new ExampleState(30)
     app.closeAndWait
-    app.clientStateTracker.getState shouldBe new ExampleState(20)
   }
 }
 

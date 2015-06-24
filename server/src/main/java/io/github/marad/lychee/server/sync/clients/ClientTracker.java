@@ -1,6 +1,7 @@
 package io.github.marad.lychee.server.sync.clients;
 
 import com.google.inject.Singleton;
+import io.netty.channel.Channel;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
 
@@ -20,6 +21,15 @@ public class ClientTracker {
 
     public Set<Client> getClients() {
         return clients;
+    }
+
+    public Client findByChannel(Channel channel) {
+        for(Client client : clients) {
+            if (client.getTcpChannel() == channel) {
+                return client;
+            }
+        }
+        return null;
     }
 
     private class RemoveClient implements GenericFutureListener<Future<? super Void>> {

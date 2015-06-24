@@ -29,7 +29,7 @@ public class ServerSyncModule extends AbstractModule {
         StateHistory stateHistory = new StateHistory(initialState);
         StateChangeNotifier stateChangeNotifier = new StateChangeNotifier();
         ServerStateTracker serverStateTracker = new ServerStateTracker(
-                initialState,  stateChangeNotifier, stateHistory);
+                initialState,  stateChangeNotifier);
 
         bind(StateHistory.class).toInstance(stateHistory);
         bind(StateChangeNotifier.class)

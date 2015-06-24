@@ -8,6 +8,8 @@ import io.github.marad.lychee.common.handlers.MessageHandlers;
 import io.github.marad.lychee.common.sync.messages.ConfirmStateMessage;
 import io.github.marad.lychee.common.sync.messages.InitialStateMessage;
 import io.github.marad.lychee.server.annotations.Server;
+import io.github.marad.lychee.server.sync.clients.Client;
+import io.github.marad.lychee.server.sync.clients.ClientTracker;
 import io.github.marad.lychee.server.sync.state.ServerStateTracker;
 import io.netty.channel.ChannelHandlerContext;
 import org.slf4j.Logger;
@@ -16,12 +18,15 @@ import org.slf4j.LoggerFactory;
 @Singleton
 public class ServerSyncMessageHandler extends MessageHandlerAdapter {
     private final ServerStateTracker stateTracker;
+    private final ClientTracker clientTracker;
 
     @Inject
     public ServerSyncMessageHandler(
             @Server MessageHandlers messageHandlers,
-            ServerStateTracker stateTracker) {
+            ServerStateTracker stateTracker,
+            ClientTracker clientTracker) {
         this.stateTracker = stateTracker;
+        this.clientTracker = clientTracker;
         messageHandlers.register(this);
     }
 
@@ -37,6 +42,8 @@ public class ServerSyncMessageHandler extends MessageHandlerAdapter {
         // TODO: implement this
         if (message instanceof ConfirmStateMessage) {
             ConfirmStateMessage confirmStateMessage = (ConfirmStateMessage) message;
+            Client client = clientTracker.findByChannel(ctx.channel());
+            client.setStateVersion(confirmStateMessage.getStateVersion());
         }
     }
 
