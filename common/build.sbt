@@ -1,4 +1,4 @@
-name := "lychee-common"
+name := "common"
  
 libraryDependencies ++= Seq(
   "io.netty" % "netty-all" % "4.0.28.Final",

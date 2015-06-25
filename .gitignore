@@ -6,3 +6,6 @@ target/
 *.swp
 .classpath
 .project
+.cache-main
+.cache-tests
+bin/
