@@ -6,7 +6,6 @@ import io.github.marad.lychee.client.{LycheeClient, LycheeClientConfig, LycheeCl
 import io.github.marad.lychee.common.ExampleState
 import io.github.marad.lychee.server.sync.clients.ClientTracker
 import io.github.marad.lychee.server.sync.state.ServerStateTracker
-import io.github.marad.lychee.server.sync.state.broadcast.StateHistory
 import io.github.marad.lychee.server.{LycheeServer, LycheeServerConfig, LycheeServerModule}
 
 class BasicInteractionTest extends IntegrationTest {

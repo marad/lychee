@@ -32,7 +32,10 @@ object LycheeBuild extends Build {
     )
     .settings(baseSettings:_*)
 
+  lazy val testkit = project
+    .settings(baseSettings:_*)
+
   lazy val root = (project in file("."))
-    .aggregate(api, common, client, server, integration)
+    .aggregate(api, common, client, server, integration, testkit)
 
 }
