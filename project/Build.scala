@@ -9,7 +9,8 @@ object LycheeBuild extends Build {
     version := "1.0.0",
     scalaVersion := "2.11.6",
     //resolvers += Resolver.jcenterRepo,
-    javacOptions ++= Seq("-source", "1.6", "-target", "1.6")
+    javacOptions ++= Seq("-source", "1.6", "-target", "1.6"),
+    fork in Test := true
     )
 
   lazy val api = project

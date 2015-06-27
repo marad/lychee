@@ -7,6 +7,7 @@ import io.github.marad.lychee.common.ExampleState
 import io.github.marad.lychee.server.sync.clients.ClientTracker
 import io.github.marad.lychee.server.sync.state.ServerStateTracker
 import io.github.marad.lychee.server.{LycheeServer, LycheeServerConfig, LycheeServerModule}
+import io.github.marad.lychee.server.sync.state.broadcast.StateBroadcastSchedule
 
 class BasicInteractionTest extends IntegrationTest {
   import BasicInteractionTest._
@@ -38,14 +39,16 @@ class BasicInteractionTest extends IntegrationTest {
     Thread.sleep(100)
 
     Then
-    app.clientStateTracker.getState shouldBe initialState
     app.closeAndWait
+    app.clientStateTracker.getState shouldBe initialState
   }
 
   it should "broadcast state updates on server and handle changes on client" in {
     Given
     val app = setupApp
     val clientTracker = app.injector.getInstance(classOf[ClientTracker])
+    val scheduler = app.injector.getInstance(classOf[StateBroadcastSchedule])
+    scheduler.start()
 
     When
     Thread.sleep(100)
@@ -55,9 +58,10 @@ class BasicInteractionTest extends IntegrationTest {
     Thread.sleep(100)
 
     Then
-    clientTracker.getClients.iterator.next.getStateVersion shouldBe 2
-    app.clientStateTracker.getState shouldBe new ExampleState(30)
+    val stateVersion = clientTracker.getClients.iterator.next.getStateVersion
     app.closeAndWait
+    stateVersion shouldBe 2
+    app.clientStateTracker.getState shouldBe new ExampleState(30)
   }
 }
 

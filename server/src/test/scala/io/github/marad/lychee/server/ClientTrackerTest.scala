@@ -42,6 +42,19 @@ class ClientTrackerTest extends UnitTest with MockitoSugar {
     client shouldBe clientContext.client
   }
 
+  it should "remove client by channel" in {
+    Given
+    val clientContext = setupClientContext
+    val clientTracker = new ClientTracker
+    clientTracker.add(clientContext.client)
+
+    When
+    clientTracker.removeByChannel(clientContext.channelStub)
+
+    Then
+    clientTracker.getClients should have size 0
+  }
+
   class DummyHandler extends ChannelHandler {
     override def exceptionCaught(ctx: ChannelHandlerContext, cause: Throwable): Unit = None
     override def handlerRemoved(ctx: ChannelHandlerContext): Unit = None

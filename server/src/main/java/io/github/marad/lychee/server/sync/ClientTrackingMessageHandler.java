@@ -14,7 +14,8 @@ public class ClientTrackingMessageHandler extends MessageHandlerAdapter {
     private final ClientTracker clientTracker;
 
     @Inject
-    public ClientTrackingMessageHandler(@Server MessageHandlers messageHandlers, ClientTracker clientTracker) {
+    public ClientTrackingMessageHandler(
+            @Server MessageHandlers messageHandlers, ClientTracker clientTracker) {
         this.clientTracker = clientTracker;
         messageHandlers.register(this);
     }
@@ -26,6 +27,6 @@ public class ClientTrackingMessageHandler extends MessageHandlerAdapter {
 
     @Override
     public void handleDisconnected(ChannelHandlerContext ctx) {
-        // TODO: implement this
+        clientTracker.removeByChannel(ctx.channel());
     }
 }

@@ -19,13 +19,12 @@ public class ClientStateTracker implements StateTracker {
     }
 
     @Override
-    public long getStateVersion() {
-        return stateVersion;
-    }
-
-    @Override
     public State getState() {
         return state;
+    }
+
+    public long getStateVersion() {
+        return stateVersion;
     }
 
     public void update(long stateVersion, State state) {

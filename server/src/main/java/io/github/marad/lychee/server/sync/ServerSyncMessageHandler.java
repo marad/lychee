@@ -39,7 +39,6 @@ public class ServerSyncMessageHandler extends MessageHandlerAdapter {
 
     @Override
     public void handleMessage(ChannelHandlerContext ctx, Message message) {
-        // TODO: implement this
         if (message instanceof ConfirmStateMessage) {
             ConfirmStateMessage confirmStateMessage = (ConfirmStateMessage) message;
             Client client = clientTracker.findByChannel(ctx.channel());

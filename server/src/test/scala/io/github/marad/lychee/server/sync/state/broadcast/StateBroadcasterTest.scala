@@ -22,15 +22,14 @@ class StateBroadcasterTest extends UnitTest with MockitoSugar {
     Given
     val stateHistory = new StateHistory(state.A)
     stateHistory.createSnapshot(state.B)
-    val stateChangeNotifier = new StateChangeNotifier
     val clientMock = mock[Client]
     val clientTrackerStub = mock[ClientTracker]
     when(clientMock.getStateVersion) thenReturn 1
     when(clientTrackerStub.getClients) thenReturn Set(clientMock)
-    new StateBroadcaster(stateChangeNotifier, stateHistory, clientTrackerStub)
+    val broadcaster = new StateBroadcaster(stateHistory, clientTrackerStub)
 
     When
-    stateChangeNotifier.notifyStateChanged(state.B, state.C)
+    broadcaster.broadcast(state.C)
 
     Then
     verify(clientMock).sendTcpMessage(new StatePatchMessage(1, 2, calcPatch(state.A, state.C)))

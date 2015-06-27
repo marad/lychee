@@ -19,13 +19,18 @@ public class ClientTracker {
                 .addListener(new RemoveClient(client));
     }
 
+    public void removeByChannel(final Channel channel) {
+        Client client = findByChannel(channel);
+        clients.remove(client);
+    }
+
     public Set<Client> getClients() {
         return clients;
     }
 
     public Client findByChannel(Channel channel) {
         for(Client client : clients) {
-            if (client.getTcpChannel() == channel) {
+            if (client.ownsChannel(channel)) {
                 return client;
             }
         }
@@ -40,7 +45,7 @@ public class ClientTracker {
         }
 
         @Override
-        public void operationComplete(Future future) throws Exception {
+        public void operationComplete(Future<? super Void> future) throws Exception {
             clients.remove(client);
         }
     }

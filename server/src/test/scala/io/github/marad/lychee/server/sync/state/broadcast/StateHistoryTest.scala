@@ -18,6 +18,19 @@ class StateHistoryTest extends UnitTest {
     stateHistory.getSnapshot(v2).getData shouldBe StateSerializer.serialize(s2)
   }
 
+  it should "not create new snapshot if state hasn't changed" in {
+    Given
+    val state = new ExampleState(2)
+    val stateHistory = new StateHistory(new ExampleState(1))
+    val expectedSnapshot = stateHistory.createSnapshot(state)
+
+    When
+    val snapshot = stateHistory.createSnapshot(state)
+
+    Then
+    snapshot shouldBe expectedSnapshot
+  }
+
   it should "fail when creating snapshot from null" in {
     Given
     val stateHistory = new StateHistory(new ExampleState(1))
@@ -60,4 +73,5 @@ class StateHistoryTest extends UnitTest {
     When
     stateHistory.removeSnapshot(100)
   }
+
 }

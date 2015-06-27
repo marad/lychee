@@ -10,21 +10,13 @@ import io.github.marad.lychee.server.annotations.Server;
 @Singleton
 public class ServerStateTracker implements StateTracker {
     private final StateChangeNotifier stateChangeNotifier;
-    private long stateVersion;
     private State state;
 
     @Inject
-    public ServerStateTracker(
-            State initialState,
+    public ServerStateTracker(State initialState,
             @Server StateChangeNotifier stateChangeNotifier) {
         this.stateChangeNotifier = stateChangeNotifier;
         this.state = initialState;
-        this.stateVersion = 0;
-    }
-
-    @Override
-    public long getStateVersion() {
-        return stateVersion;
     }
 
     @Override

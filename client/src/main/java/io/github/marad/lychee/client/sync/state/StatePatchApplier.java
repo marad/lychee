@@ -1,10 +1,11 @@
 package io.github.marad.lychee.client.sync.state;
 
-import com.nothome.delta.GDiffPatcher;
 import io.github.marad.lychee.api.State;
 import io.github.marad.lychee.common.StateSerializer;
 
 import java.io.IOException;
+
+import com.nothome.delta.GDiffPatcher;
 
 public class StatePatchApplier {
     public State apply(State oldState, byte[] patch) {

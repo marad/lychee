@@ -2,28 +2,45 @@ package io.github.marad.lychee.server.sync.state.broadcast;
 
 import com.google.common.base.Preconditions;
 import com.google.inject.Singleton;
+
 import io.github.marad.lychee.api.State;
 import io.github.marad.lychee.common.StateSerializer;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
 @Singleton
 public class StateHistory {
     private long nextVersion = 0;
+    private StateSnapshot lastSnapshot;
     private final Map<Long, StateSnapshot> versionMap = new HashMap<Long, StateSnapshot>();
 
     public StateHistory(State initialState) {
-        createSnapshot(initialState);
+        storeSnapshot(
+            getNextVersion(),
+            StateSerializer.serialize(initialState)
+        );
     }
 
     public StateSnapshot createSnapshot(State state) {
         Preconditions.checkNotNull(state);
-        long version = getNextVersion();
         byte[] data = StateSerializer.serialize(state);
-        StateSnapshot stateSnapshot = new StateSnapshot(version, data);
-        versionMap.put(version, stateSnapshot);
-        return stateSnapshot;
+        if (sameAsPreviousState(data)) {
+            return lastSnapshot;
+        } else {
+            return storeSnapshot(getNextVersion(), data);
+        }
+    }
+
+    private boolean sameAsPreviousState(byte[] data) {
+        return Arrays.equals(lastSnapshot.getData(), data);
+    }
+
+    private StateSnapshot storeSnapshot(long version, byte[] data) {
+        lastSnapshot = new StateSnapshot(version, data);
+        versionMap.put(version, lastSnapshot);
+        return lastSnapshot;
     }
 
     public StateSnapshot getSnapshot(long version) {
