@@ -23,7 +23,7 @@ class BasicInteractionTest extends IntegrationTest {
     val serverStateTracker = injector.getInstance(classOf[ServerStateTracker])
     server.start()
     client.connect()
-    
+
     def closeAndWait = {
       server.closeAndWait(1000)
       client.closeAndWait(1000)

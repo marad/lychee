@@ -1,5 +1,7 @@
 import sbt._
 import Keys._
+import com.typesafe.sbteclipse.plugin.EclipsePlugin.EclipseKeys
+import com.typesafe.sbteclipse.plugin.EclipsePlugin.EclipseExecutionEnvironment
 
 object LycheeBuild extends Build {
   val baseSettings = Defaults.defaultSettings ++ Seq(
@@ -18,15 +20,23 @@ object LycheeBuild extends Build {
     .settings(baseSettings:_*)
 
   lazy val client = project
-    .dependsOn(common % "compile->compile;test->test")
+    .dependsOn(
+      api % "compile->compile;test->test",
+      common % "compile->compile;test->test"
+    )
     .settings(baseSettings:_*)
 
   lazy val server = project
-    .dependsOn(common % "compile->compile;test->test")
+    .dependsOn(
+      api % "compile->compile;test->test",
+      common % "compile->compile;test->test"
+    )
     .settings(baseSettings:_*)
 
   lazy val integration = project
     .dependsOn(
+      api % "compile->compile;test->test",
+      common % "compile->compile;test->test",
       client % "compile->compile;test->test", 
       server % "compile->compile;test->test"
     )
@@ -38,4 +48,5 @@ object LycheeBuild extends Build {
   lazy val root = (project in file("."))
     .aggregate(api, common, client, server, integration, testkit)
 
+  EclipseKeys.executionEnvironment := Some(EclipseExecutionEnvironment.JavaSE16)
 }

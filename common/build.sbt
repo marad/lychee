@@ -1,5 +1,3 @@
-name := "common"
- 
 libraryDependencies ++= Seq(
   "io.netty" % "netty-all" % "4.0.28.Final",
   "org.slf4j" % "slf4j-api" % "1.7.7",
